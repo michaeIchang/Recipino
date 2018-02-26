@@ -1,10 +1,350 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recipino</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        body {
+            text-align: center;
+        }
+        /*div {*/
+            /*margin: 0 auto;*/
+            /*display: inline;*/
+        /*}*/
+        form {
+            margin: auto auto;
+        }
+        #login-button {
+            margin: 0 auto;
+        }
+        #sign-out {
+            display: none;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
-$END$
+<div clas="form">
+    <script type="text/javascript">
+        // $("#submit").click(function () {
+        //     console.log("here");
+        //     $.post('recipe.php', 'val=' + document.getElementById("recipe").innerText, function (response) {
+        //         alert(response);
+        //     });
+        // });
+        // Variable to hold request
+        var request;
+
+        // Bind to the submit event of our form
+        $("#foo").submit(function(event){
+
+            // Prevent default posting of form - put here to work in case of errors
+            event.preventDefault();
+
+            // Abort any pending request
+            if (request) {
+                request.abort();
+            }
+            // setup some local variables
+            var $form = $(this);
+
+            // Let's select and cache all the fields
+            var $inputs = $form.find("input, select, button, textarea");
+
+            // Serialize the data in the form
+            var serializedData = $form.serialize();
+
+            // Let's disable the inputs for the duration of the Ajax request.
+            // Note: we disable elements AFTER the form data has been serialized.
+            // Disabled form elements will not be serialized.
+            $inputs.prop("disabled", true);
+
+            // Fire off the request to /form.php
+            request = $.ajax({
+                url: "/form.php",
+                type: "post",
+                data: serializedData
+            });
+
+            // Callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR){
+                // Log a message to the console
+                console.log("Hooray, it worked!");
+            });
+
+            // Callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                // Log the error to the console
+                console.error(
+                    "The following error occurred: "+
+                    textStatus, errorThrown
+                );
+            });
+
+            // Callback handler that will be called regardless
+            // if the request failed or succeeded
+            request.always(function () {
+                // Reenable the inputs
+                $inputs.prop("disabled", false);
+            });
+
+        });
+
+        // $('#myList a[href="#profile"]').on('click', function (e) {
+        //     e.preventDefault();
+        //     selectedRecipe = this.id;
+        //     $(this).tab('show');
+        // });
+        //
+        // $('#myList a:first-child').on('click', function (e) {
+        //     e.preventDefault();
+        //     selectedRecipe = this.id;
+        //     $(this).tab('show');
+        // });
+        //
+        // $('#myList a:last-child').on('click', function (e) {
+        //     e.preventDefault();
+        //     selectedRecipe = this.id;
+        //     $(this).tab('show');
+        // });
+        //
+        // $('#myList a:nth-child(3)').on('click', function (e) {
+        //     e.preventDefault();
+        //     selectedRecipe = this.id;
+        //     $(this).tab('show');
+        // });
+
+
+        // $('#myList a[href="#profile"]').tab('show') // Select tab by name
+        // $('#myList a:first-child').tab('show') // Select first tab
+        // $('#myList a:last-child').tab('show') // Select last tab
+        // $('#myList a:nth-child(3)').tab('show') // Select third tab
+        $(document).ready(function() {
+            $( "#login-button").click(function() {
+                // alert( "Handler for .click() called." );
+                // e.preventDefault()
+                var username = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
+                // console.log(username);
+                // console.log(password);
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", "registration.php", true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.addEventListener("load", regCallBack, false);
+                xmlHttp.send("username=" + username + "&password=" + password);
+            });
+
+            $("#sign-out").click(function () {
+                // alert( "Handler for .click() called." );
+                // e.preventDefault()
+                document.getElementById("sign-out").style.display = 'none';
+                document.getElementById("sign-in").style.display = 'inline-block';
+            });
+
+            $("#submit-recipe").click(function () {
+                // alert( "Handler for .click() called." );
+                // e.preventDefault()
+
+                var recipes = document.getElementsByClassName("list-group-item");
+                var i = 0;
+                for (i; i < recipes.length; ++i) {
+                    if (recipes[i].classList.contains('active')) {
+                        break;
+                    }
+                }
+
+                var recipesSteps = document.getElementsByTagName("textarea");
+                var recipeSteps = recipesSteps[i].value;
+                // console.log(recipeSteps);
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", "recipe.php", true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.addEventListener("load", sendRecCallBack, false);
+                xmlHttp.send("recipeSteps=" + recipeSteps);
+            });
+
+            $("#save-recipe").click(function () {
+                // alert( "Handler for .click() called." );
+                // e.preventDefault()
+
+                var recipes = document.getElementsByClassName("list-group-item");
+                var i = 0;
+                for (i; i < recipes.length; ++i) {
+                    if (recipes[i].classList.contains('active')) {
+                        break;
+                    }
+                }
+
+                var recipeName = recipes[i].innerText;
+                var recipesSteps = document.getElementsByTagName("textarea");
+                var recipeSteps = recipesSteps[i].value;
+                // console.log(recipeSteps);
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", "saveRecipe.php", true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.addEventListener("load", saveRecCallBack, false);
+                xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps);
+            });
+        });
+
+        function sendRecCallBack(event) {
+            var plainText = event.target.responseText;
+            var jsonData = JSON.parse(plainText);
+            console.log(jsonData.steps);
+        }
+
+        function saveRecCallBack(event) {
+            var plainText = event.target.responseText;
+            var jsonData = JSON.parse(plainText);
+            console.log(jsonData.user);
+            console.log(jsonData.steps);
+        }
+
+        function regCallBack (event) {
+            var plainText = event.target.responseText;
+            var jsonData = JSON.parse(plainText);
+            // console.log(jsonData.regStatus);
+            console.log(jsonData.username);
+            if (jsonData.regStatus == "signed-in") {
+                document.getElementById("sign-in").style.display = 'none';
+                document.getElementById("sign-out").style.display = 'inline-block';
+            }
+        }
+
+
+
+    </script>
+    <!--<h1>Recipino!</h1>-->
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Recipino</h1>
+            <p class="lead">
+                A simple solution to home cooking!
+            </p>
+            <a class="btn btn-primary btn-lg" id="sign-in" data-toggle="modal" data-target="#signInModal" href="#" role="button">Register/Sign In</a>
+            <a class="btn btn-primary btn-lg" id="sign-out" data-toggle="modal" href="#" role="button">Log Out</a>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Registration/Sign In</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Username</span>
+                            </div>
+                            <input type="text" class="form-control" id="username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon2">Password </span>
+                            </div>
+                            <input type="text" class="form-control" id="password" aria-label="Password" aria-describedby="basic-addon2">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <button type="button" class="btn btn-primary" id="login-button" data-dismiss="modal">Go!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form style="max-width: 75%;">
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="default-recipe" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Chocolate Chip Cookies</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-1" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Custom Recipe #1</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-2" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Custom Recipe #2</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-3" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Custom Recipe #3</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-4" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Custom Recipe #4</a>
+
+                </div>
+            </div>
+            <div class="col-8" style="max-width: 75%">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                        <textarea class="form-control" id="recipe-steps-1" rows="9">Ingredients
+5 oz Butter
+2/3 cup Brown Sugar
+1/2 cup Granulated Sugar
+1 ea Eggs
+1 tsp Vanilla Extract
+1 cup Cake Flour
+3/4 cup Bread Flour
+2/3 tsp Baking Soda
+3/4 tsp Baking Powder
+3/4 tsp Salt
+8 oz Semi-sweet Chocolate Chips
+
+Method
+1. Cream the Butter and Sugars
+2. Add Vanilla and Eggs - beat until incorporated
+3. Add Flour, Baking Powder, Baking Soda, and Salt
+4. When dough comes together, fold in chocolate chips - do not over-mix!
+5. Using room-temperature dough, scoop into balls and place on a lined sheet tray, arranging them in a staggered pattern
+6. Bake 350 for 10 minutes - when you remove them from the oven, drop the tray on the floor to "flatten" the cookies
+7. When cool, store/serve appropriately
+                        </textarea>
+                    </div>
+                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                        <textarea class="form-control" id="recipe-steps-2" rows="9"></textarea>
+                    </div>
+                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                        <textarea class="form-control" id="recipe-steps-3" rows="9"></textarea>
+                    </div>
+                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+                        <textarea class="form-control" id="recipe-steps-4" rows="9"></textarea>
+                    </div>
+                    <div class="tab-pane fade" id="list-set" role="tabpanel" aria-labelledby="list-settings-list">
+                        <textarea class="form-control" id="recipe-steps-5" rows="9"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <!--<form>-->
+        <!--<div>-->
+            <!--<ul class="list-group">-->
+                <!--<li class="list-group-item">Cras justo odio</li>-->
+                <!--<li class="list-group-item">Dapibus ac facilisis in</li>-->
+                <!--<li class="list-group-item">Morbi leo risus</li>-->
+                <!--<li class="list-group-item">Porta ac consectetur ac</li>-->
+                <!--<li class="list-group-item">Vestibulum at eros</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label for="exampleTextarea">Recipe Steps</label>-->
+            <!--<textarea class="form-control" id="recipe" rows="3"></textarea>-->
+        <!--</div>-->
+    <!--</form>-->
+    <br><br>
+    <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
+    <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
 </body>
 </html>
