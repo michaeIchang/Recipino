@@ -6,43 +6,146 @@
  * Time: 3:31 AM
  */
 session_start();
-require 'database.php';
+
+$db_user = 'root';
+$db_password = 'root';
+
+$db = 'recipino';
+$host = 'localhost';
+$port = 8889;
+
+$mysqli = mysqli_init();
+$success = mysqli_real_connect(
+    $mysqli,
+    $host,
+    $db_user,
+    $db_password,
+    $db,
+    $port
+);
 
 $username = $_POST['username'];
-$_SESSION['username'] = $username;
 $password = $_POST['password'];
+$crypt = password_hash($password, PASSWORD_DEFAULT);
 
-$stmt = $link->prepare("SELECT COUNT(*) from users WHERE username=?");
+
+$stmt = $mysqli->prepare("SELECT COUNT(*) FROM users WHERE username=?");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
 $stmt->bind_param('s', $username);
-$stmt->bind_result($cnt);
 $stmt->execute();
-
+$stmt->bind_result($cnt);
+$stmt->fetch();
 $stmt->close();
 
-$status = "signed-in";
-if ($realPass == $password) {
-    $status = "signed-out";
+
+$alreadyRegistered = false;
+if ($cnt == 1){
+    $alreadyRegistered = true;
 } else {
-    $stmt = $link->prepare("INSERT INTO users (username, password) VALUES (?,?)");
+    $_SESSION['username'] = $username;
+
+    $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?,?)");
     if(!$stmt){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
     }
 
-    $stmt->bind_param('ss', $username, $password);
-    $stmt->bind_result($cnt);
+    $stmt->bind_param('ss', $username, $crypt);
     $stmt->execute();
-
+    $stmt->fetch();
     $stmt->close();
 }
 
-$arr = array("regStatus" => $status, "username" => $_SESSION['username']);
+$recipe_name = 'Chocolate Chip Cookies';
+$recipe_steps = 'Ingredients
+5 oz Butter
+2/3 cup Brown Sugar
+1/2 cup Granulated Sugar
+1 ea Eggs
+1 tsp Vanilla Extract
+1 cup Cake Flour
+3/4 cup Bread Flour
+2/3 tsp Baking Soda
+3/4 tsp Baking Powder
+3/4 tsp Salt
+8 oz Semi-sweet Chocolate Chips
+
+Method
+1. Cream the Butter and Sugars
+2. Add Vanilla and Eggs - beat until incorporated
+3. Add Flour, Baking Powder, Baking Soda, and Salt
+4. When dough comes together, fold in chocolate chips - do not over-mix!
+5. Using room-temperature dough, scoop into balls and place on a lined sheet tray, arranging them in a staggered pattern
+6. Bake 350 for 10 minutes - when you remove them from the oven, drop the tray on the floor to "flatten" the cookies
+7. When cool, store/serve appropriately';
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+
+$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->execute();
+$stmt->close();
+
+$recipe_name = 'Custom Recipe #1';
+$recipe_steps = 'Custom Recipe';
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+
+$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->execute();
+$stmt->close();
+
+$recipe_name = 'Custom Recipe #2';
+$recipe_steps = 'Custom Recipe';
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+
+$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->execute();
+$stmt->close();
+
+$recipe_name = 'Custom Recipe #3';
+$recipe_steps = 'Custom Recipe';
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+
+$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->execute();
+$stmt->close();
+
+$recipe_name = 'Custom Recipe #4';
+$recipe_steps = 'Custom Recipe';
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+
+$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->execute();
+$stmt->close();
+
+$arr = array("alreadyRegistered" => $alreadyRegistered, "crypt" => $crypt);
 
 echo json_encode($arr);
-
 ?>

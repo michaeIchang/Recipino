@@ -13,9 +13,9 @@ $db = 'recipino';
 $host = 'localhost';
 $port = 8889;
 
-$link = mysqli_init();
+$mysqli = mysqli_init();
 $success = mysqli_real_connect(
-    $link,
+    $mysqli,
     $host,
     $db_user,
     $db_password,
