@@ -13,24 +13,9 @@ $recipeSteps = $_POST['recipeSteps'];
 //$recipeName = 'Chocolate Chip Cookies';
 //$recipeSteps = 'test2';
 
-$db_user = 'root';
-$db_password = 'root';
+require 'database.php';
 
-$db = 'recipino';
-$host = 'localhost';
-$port = 8889;
-
-$link = mysqli_init();
-$success = mysqli_real_connect(
-    $link,
-    $host,
-    $db_user,
-    $db_password,
-    $db,
-    $port
-);
-
-$stmt = $link->prepare("SELECT COUNT(*) FROM recipes WHERE username=? AND recipe_name=?");
+$stmt = $mysqli->prepare("SELECT COUNT(*) FROM recipes WHERE username=? AND recipe_name=?");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
@@ -43,7 +28,7 @@ $stmt->fetch();
 $stmt->close();
 
 if($cnt == 1) {
-    $stmt2 = $link->prepare("UPDATE recipes SET recipe_steps=? WHERE username=? AND recipe_name=?");
+    $stmt2 = $mysqli->prepare("UPDATE recipes SET recipe_steps=? WHERE username=? AND recipe_name=?");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
@@ -53,7 +38,7 @@ if($cnt == 1) {
     $stmt2->close();
 }
 else {
-    $stmt2 = $link->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?, ?, ?)");
+    $stmt2 = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?, ?, ?)");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
@@ -63,10 +48,6 @@ else {
     $stmt2->execute();
     $stmt2->close();
 }
-
-
-
-
 
 $arr = array("steps" => $recipeSteps);
 

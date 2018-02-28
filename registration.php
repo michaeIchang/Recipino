@@ -7,22 +7,7 @@
  */
 session_start();
 
-$db_user = 'root';
-$db_password = 'root';
-
-$db = 'recipino';
-$host = 'localhost';
-$port = 8889;
-
-$mysqli = mysqli_init();
-$success = mysqli_real_connect(
-    $mysqli,
-    $host,
-    $db_user,
-    $db_password,
-    $db,
-    $port
-);
+require 'database.php';
 
 $username = $_POST['username'];
 $password = $_POST['password'];

@@ -8,7 +8,7 @@
 session_start();
 require 'database.php';
 
-$username = 'user2';
+$username = $_POST['username'];
 
 $stmt = $mysqli->prepare("SELECT recipe_name, recipe_steps FROM recipes WHERE username=?");
 if(!$stmt){

@@ -6,20 +6,11 @@
  * Time: 5:18 PM
  */
 
-$db_user = 'root';
-$db_password = 'root';
+$mysqli = new mysqli('localhost', 'root', 'lolunt11', 'recipino');
 
-$db = 'recipino';
-$host = 'localhost';
-$port = 8889;
+if($mysqli->connect_errno) {
+    printf("Connection Failed: %s\n", $mysqli->connect_error);
+    exit;
+}
 
-$mysqli = mysqli_init();
-$success = mysqli_real_connect(
-    $mysqli,
-    $host,
-    $db_user,
-    $db_password,
-    $db,
-    $port
-);
 ?>
