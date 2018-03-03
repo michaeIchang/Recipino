@@ -34,6 +34,10 @@
         #recipes {
             display: none;
         }
+        #step-no, #step-back, #step-next {
+            display: none;
+        }
+
 
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -196,12 +200,14 @@
 
                 var recipesSteps = document.getElementsByTagName("textarea");
                 var recipeSteps = recipesSteps[i].value;
+                var defaultStepNo = '0';
                 // console.log(recipeSteps);
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("POST", "recipe.php", true);
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xmlHttp.addEventListener("load", sendRecCallBack, false);
-                xmlHttp.send("recipeSteps=" + recipeSteps);
+
+                xmlHttp.send("recipeSteps=" + recipeSteps + "&stepNo=" + defaultStepNo);
             });
 
             $("#save-recipe").click(function () {
@@ -226,12 +232,54 @@
                 xmlHttp.addEventListener("load", saveRecCallBack, false);
                 xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps);
             });
+
+            $("#step-back").click(function () {
+                var stepNo = document.getElementById("step-no").innerText;
+                var stepArr = stepNo.split(" ");
+
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", "changeStep.php", true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.addEventListener("load", changeStepCallBack, false);
+                var newStep = parseInt(stepArr[1]) - 1;
+                xmlHttp.send("stepNo=" + newStep);
+                // console.log(newStep);
+            });
+
+            $("#step-next").click(function () {
+                var stepNo = document.getElementById("step-no").innerText;
+                var stepArr = stepNo.split(" ");
+
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("POST", "changeStep.php", true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.addEventListener("load", changeStepCallBack, false);
+                var newStep = parseInt(stepArr[1]) + 1;
+                xmlHttp.send("stepNo=" + newStep);
+                // console.log(newStep);
+            });
         });
+
+        function changeStepCallBack(event) {
+            var plainText = event.target.responseText;
+            var jsonData = JSON.parse(plainText);
+            console.log(jsonData.stepNo);
+            if (parseInt(jsonData.stepNo) > 0) {
+                document.getElementById("step-back").disabled = false;
+            } else {
+                document.getElementById("step-back").disabled = true;
+            }
+
+            document.getElementById("step-no").innerText = "Step " + jsonData.stepNo;
+        }
 
         function sendRecCallBack(event) {
             var plainText = event.target.responseText;
             var jsonData = JSON.parse(plainText);
-            console.log(jsonData.steps);
+            console.log(jsonData.Steps);
+            document.getElementById("step-back").style.display = 'inline-block';
+            document.getElementById("step-no").style.display = 'inline-block';
+            document.getElementById("step-next").style.display = 'inline-block';
         }
 
         function saveRecCallBack(event) {
@@ -474,7 +522,15 @@
             <!--<textarea class="form-control" id="recipe" rows="3"></textarea>-->
         <!--</div>-->
     <!--</form>-->
-    <br><br>
+    <br>
+
+    <button type="submit" class="btn btn-primary" id="step-back" disabled>Previous Step</button>
+    <div class="alert alert-primary" id="step-no" role="alert">
+        Step 0
+    </div>
+    <button type="submit" class="btn btn-primary" id="step-next">Next Step</button>
+
+    <br>
     <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
     <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

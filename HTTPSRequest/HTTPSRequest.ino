@@ -1,88 +1,50 @@
 #include <ESP8266WiFi.h>
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
-#define LCD_ROWS 4
-#define LCD_COLS 20
-const char* ssid = "Samsung Galaxy S6 3825";
-const char* password = "unloqlog";
+// WiFi Parameters
+const char* ssid = "wustl-guest-2.0";
+const char* password = "";
 
-const char* host = "recipino.herokuapp.com";
-
-LiquidCrystal_I2C lcd(0x27, 20, 4);
-void setup()
-{
-  lcd.init();
-  lcd.backlight();
+void setup() {
   Serial.begin(115200);
-  Serial.println();
-
-  Serial.printf("Connecting to %s ", ssid);
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    delay(500);
-    Serial.print(".");
+ 
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting...");
   }
-  Serial.println(" connected");
 }
 
-
-void loop()
-{
-  WiFiClient client;
-
-  Serial.printf("\n[Connecting to %s ... ", host);
-  if (client.connect(host, 80))
-  {
-    Serial.println("connected]");
-
-    Serial.println("[Sending a request]");
-    client.print(String("GET /") + " HTTP/1.1\r\n" +
-                 "Host: " + host + "\r\n" +
-                 "Connection: close\r\n" +
-                 "\r\n"
-                );
-
-    Serial.println("[Response:]");
-    boolean reading = false;
-    int cnt = 0;
-    int ln = 0;
-    while (client.connected())
-    {
-      if (client.available())
-      {
-        String line = client.readStringUntil('\n');
-        if (reading == true) {
-          display(line, ln);
-          Serial.println(line);
-          ++ln;  
-        }
-        
-        if (line.substring(1,5) == "body") {         
-          reading = true;
-        }
-        if (line.substring(2,6) == "body") {
-           reading = false;
-        }
-        
-      }
+void loop() {
+  // Check WiFi Status
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;  //Object of class HTTPClient
+    http.begin("http://104.131.22.37/recipe.json");
+    int httpCode = http.GET();
+    //Check the returning code                                                                  
+    if (httpCode > 0) {
+      // Parsing
+      const size_t bufferSize = 20000;
+      DynamicJsonBuffer jsonBuffer(bufferSize);
+      JsonObject& root = jsonBuffer.parseObject(http.getString());
+      // Parameters
+      int id = root["id"]; // 1
+      const char* stepNo = root["Step Number"]; // "Leanne Graham"
+      const char* ingredients = root["Ingredients"]; // "Bret"
+      const char* steps = root["Steps"]; // "Sincere@april.biz"
+      // Output to serial monitor
+      Serial.print("Step Number:");
+      Serial.println(stepNo);
+      Serial.print("Ingredients:");
+//      const char s = ingredients[0];
+      Serial.println(ingredients);
+      Serial.print("Steps:"); 
+      Serial.println(steps);
+//        Serial.println(http.getString());
     }
-    client.stop();
-    Serial.println("\n[Disconnected]");
+    http.end();   //Close connection
   }
-  else
-  {
-    Serial.println("connection failed!]");
-    client.stop();
-  }
-  delay(5000);
-}
-
-void display(String resp, int ln) {
-//  for (int i = 0; i < LCD_ROWS; i++) {
-    lcd.setCursor(0, ln);
-    String part = resp.substring(ln * LCD_COLS, ln * LCD_COLS + LCD_COLS);
-    lcd.print(part);
-//  }
+  // Delay
+  delay(60000);
 }
