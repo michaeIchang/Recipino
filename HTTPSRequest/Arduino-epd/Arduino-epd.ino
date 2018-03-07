@@ -1,22 +1,18 @@
 /*********************************************************************************************************
-
   File                : Arduino-epd
   Hardware Environment:
   Build Environment   : Arduino
   Version             : V1.6.1
   By                  : WaveShare
-
                                    (c) Copyright 2005-2015, WaveShare
                                         http://www.waveshare.net
                                         http://www.waveshare.com
                                            All Rights Reserved
-
 *********************************************************************************************************/
 #include <epd.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-
 
 const int led = 13;                           //user led
 const char* ssid = "wustl-guest-2.0";
@@ -97,32 +93,32 @@ void draw_text_demo(void)
 //      epd_disp_string("Step Number:", 0, 0);
 //      epd_disp_string(stepNo, 175, 0);
       //      Serial.println(stepNo);
-//      if (*stepNo == '0') {
+      if ((*stepNo - '0') == 0) {
 //        Serial.print("Ingredients:");
         //      const char s = ingredients[0];
-//        epd_disp_string("Ingredients:", 0, 0);
-//        epd_disp_string(ingredient1, 0, 48);
-//        epd_disp_string(ingredient2, 0, 48 * 2);
-//        epd_disp_string(ingredient3, 0, 48 * 3);
-//        epd_disp_string(ingredient4, 0, 48 * 4);
-//        epd_disp_string(ingredient5, 0, 48 * 5);
-//        epd_disp_string(ingredient6, 0, 48 * 6);
-//        epd_disp_string(ingredient7, 0, 48 * 7);
-//        epd_disp_string(ingredient8, 0, 48 * 8);
-//        epd_disp_string(ingredient9, 0, 48 * 9);
-//        epd_disp_string(ingredient10, 0, 48 * 10);
-//        epd_disp_string(ingredient11, 0, 48 * 11);
-//      } else {
+        epd_disp_string("Ingredients:", 0, 0);
+        epd_disp_string(ingredient1, 0, 48);
+        epd_disp_string(ingredient2, 0, 48 * 2);
+        epd_disp_string(ingredient3, 0, 48 * 3);
+        epd_disp_string(ingredient4, 0, 48 * 4);
+        epd_disp_string(ingredient5, 0, 48 * 5);
+        epd_disp_string(ingredient6, 0, 48 * 6);
+        epd_disp_string(ingredient7, 0, 48 * 7);
+        epd_disp_string(ingredient8, 0, 48 * 8);
+        epd_disp_string(ingredient9, 0, 48 * 9);
+        epd_disp_string(ingredient10, 0, 48 * 10);
+        epd_disp_string(ingredient11, 0, 48 * 11);
+      } else {
 //        const char* step = root["Steps"][stepNo];
-        for (int j = 0; j < root["Steps"][stepNo].size(); ++j) {
+        for (int j = 0; j < root["Steps"][*stepNo - '0'].size(); ++j) {
 //          const char * subStepNo = '';
 //            String subStepNo = "";
 //            subStepNo += j;
-          const char* stepDetail = root["Steps"][stepNo][j];
-          epd_disp_string(stepDetail, 0, 0);
+          const char* stepDetail = root["Steps"][(*stepNo) - '0'][j];
+          epd_disp_string(stepDetail, 0, 48 * j);
 //          epd_disp_string("hello", 0, 0);
         }
-//      }
+      }
       //      for (int i = 1; i <= 11; ++i) {
       //        String s = "" + i;
       //        const char* ingredient = root["Ingredients"][s];
