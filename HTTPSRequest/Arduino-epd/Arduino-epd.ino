@@ -14,10 +14,11 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-const int led = 13;                           //user led
+//const int led = 13;                           //user led
 const char* ssid = "wustl-guest-2.0";
 const char* password = "";
 int currPage = 0;
+int numPages;
 const int leftButtonPin = 5; 
 const int rightButtonPin = 6; 
 
@@ -54,6 +55,8 @@ void draw_page(void)
       DynamicJsonBuffer jsonBuffer(bufferSize);
       JsonObject& root = jsonBuffer.parseObject(http.getString());
       const char* stepNo = root["Pages"];
+      //keep track of number of pages
+      numPages = root["Pages"].size();
       for (int j = 1; j < root["Pages"][currPage].size(); ++j) {
         const char* ingredient = root["Pages"][currPage][j];
         epd_disp_string(ingredient, 0, 64 * j);
@@ -89,30 +92,42 @@ void setup(void)
 
 void loop(void)
 {
-  char flag = 0;
+  //MC
+  //IDK what this flag is for
+//  char flag = 0;
 
   /*
     Draw text demo
   */
   
   draw_page();
-  delay(5000);
+//  delay(5000);
   epd_enter_stopmode();
   
   while (1)
   {
-    buttonState = digitalRead(buttonPin);
-    if (buttonState == HIGH)
+    leftButtonState = digitalRead(leftButtonPin);
+    rightButtonState = digitalRead(rightButtonPin);
+    if (leftButtonState == HIGH)
     {
-      flag = 0;
+//      flag = 0;
+      if (currPage > 0) {
+        --currPage;
+      }
       digitalWrite(led, LOW);
+      //MC
       //this may not be the right function to call...
       epd_wakeup();
       break;
     }
+    else if (rightButtonState == HIGH) {
+      if (currPage + 1 <= numPages) {
+        ++currPage;
+      }
+    }
     else
     {
-      flag = 1;
+//      flag = 1;
       digitalWrite(led, HIGH);
     }
     delay(500);
