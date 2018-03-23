@@ -46,7 +46,17 @@ if ($cnt == 1){
 }
 
 $recipe_name = 'Chocolate Chip Cookies';
-$recipe_steps = 'Ingredients
+$recipe_steps = '
+Method
+1. Cream the Butter and Sugars
+2. Add Vanilla and Eggs - beat until incorporated
+3. Add Flour, Baking Powder, Baking Soda, and Salt
+4. When dough comes together, fold in chocolate chips - do not over-mix!
+5. Using room-temperature dough, scoop into balls and place on a lined sheet tray, arranging them in a staggered pattern
+6. Bake 350 for 10 minutes - when you remove them from the oven, drop the tray on the floor to "flatten" the cookies
+7. When cool, store/serve appropriately';
+$recipe_ing = 
+'Ingredients
 5 oz Butter
 2/3 cup Brown Sugar
 1/2 cup Granulated Sugar
@@ -58,41 +68,35 @@ $recipe_steps = 'Ingredients
 3/4 tsp Baking Powder
 3/4 tsp Salt
 8 oz Semi-sweet Chocolate Chips
+';
 
-Method
-1. Cream the Butter and Sugars
-2. Add Vanilla and Eggs - beat until incorporated
-3. Add Flour, Baking Powder, Baking Soda, and Salt
-4. When dough comes together, fold in chocolate chips - do not over-mix!
-5. Using room-temperature dough, scoop into balls and place on a lined sheet tray, arranging them in a staggered pattern
-6. Bake 350 for 10 minutes - when you remove them from the oven, drop the tray on the floor to "flatten" the cookies
-7. When cool, store/serve appropriately';
-
-$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps, recipe_ing) VALUES (?,?,?,?)");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
-$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->bind_param('ssss', $username, $recipe_name, $recipe_steps, $recipe_ing);
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #1';
 $recipe_steps = 'Custom Recipe';
+$recipe_ing = 'Custom Recipe';
 
-$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps, recipe_ing) VALUES (?,?,?,?)");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
-$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->bind_param('ssss', $username, $recipe_name, $recipe_steps, $recipe_ing);
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #2';
 $recipe_steps = 'Custom Recipe';
+$recipe_ing = 'Custom Recipe';
 
 $stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
 if(!$stmt){
@@ -100,33 +104,41 @@ if(!$stmt){
     exit;
 }
 
-$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps, recipe_ing) VALUES (?,?,?,?)");
+if(!$stmt){
+    printf("Query Prep Failed: %s\n", $mysqli->error);
+    exit;
+}
+$stmt->bind_param('ssss', $username, $recipe_name, $recipe_steps, $recipe_ing);
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #3';
 $recipe_steps = 'Custom Recipe';
+$recipe_ing = 'Custom Recipe';
 
-$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps, recipe_ing) VALUES (?,?,?,?)");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
-$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->bind_param('ssss', $username, $recipe_name, $recipe_steps, $recipe_ing);
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #4';
 $recipe_steps = 'Custom Recipe';
+$recipe_ing = 'Custom Recipe';
 
-$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?,?,?)");
+$stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps, recipe_ing) VALUES (?,?,?,?)");
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
-$stmt->bind_param('sss', $username, $recipe_name, $recipe_steps);
+$stmt->bind_param('ssss', $username, $recipe_name, $recipe_steps, $recipe_ing);
 $stmt->execute();
 $stmt->close();
 

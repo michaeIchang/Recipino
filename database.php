@@ -6,7 +6,7 @@
  * Time: 5:18 PM
  */
 
-$mysqli = new mysqli('localhost', 'root', 'lolunt11', 'recipino');
+$mysqli = new mysqli('localhost', 'wustl_inst', 'wustl_pass', 'recipino');
 
 if($mysqli->connect_errno) {
     printf("Connection Failed: %s\n", $mysqli->connect_error);
