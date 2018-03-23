@@ -97,17 +97,12 @@ void draw_text_demo(void)
 //        Serial.print("Ingredients:");
         //      const char s = ingredients[0];
         epd_disp_string("Ingredients:", 0, 0);
-        epd_disp_string(ingredient1, 0, 48);
-        epd_disp_string(ingredient2, 0, 48 * 2);
-        epd_disp_string(ingredient3, 0, 48 * 3);
-        epd_disp_string(ingredient4, 0, 48 * 4);
-        epd_disp_string(ingredient5, 0, 48 * 5);
-        epd_disp_string(ingredient6, 0, 48 * 6);
-        epd_disp_string(ingredient7, 0, 48 * 7);
-        epd_disp_string(ingredient8, 0, 48 * 8);
-        epd_disp_string(ingredient9, 0, 48 * 9);
-        epd_disp_string(ingredient10, 0, 48 * 10);
-        epd_disp_string(ingredient11, 0, 48 * 11);
+//        for (int j = 1; j < root["Ingredients"].size(); ++j) {
+//          const char* ingredient = root["Ingredients"][j];
+//          epd_disp_string(ingredient, 0, 48 * j);
+//        }
+      const char* c = root["Ingredients"][1];
+      epd_disp_string(c , 0, 48);
       } else {
 //        const char* step = root["Steps"][stepNo];
         for (int j = 0; j < root["Steps"][*stepNo - '0'].size(); ++j) {

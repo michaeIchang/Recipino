@@ -19,6 +19,12 @@
         form {
             margin: auto auto;
         }
+        .flex-container {
+          display: flex;
+        }
+        textarea {
+          /* display: inline-block; */
+        }
         #login-button, #register-button {
             margin: 0 auto;
         }
@@ -487,7 +493,13 @@
             <div class="col-8" style="max-width: 75%">
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                        <textarea class="form-control" id="recipe-steps-1" rows="9"></textarea>
+                      <label for="recipe-ing-1" style="float: left;">Ingredients</label> 
+                      <label for="recipe-steps-1">Steps</label>
+                        <div class="flex-container">
+                          <textarea class="form-control" id="recipe-ing-1" rows="9"></textarea>
+
+                          <textarea class="form-control" id="recipe-steps-1" rows="9"></textarea>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
                         <textarea class="form-control" id="recipe-steps-2" rows="9"></textarea>
