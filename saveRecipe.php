@@ -9,6 +9,7 @@
 session_start();
 $recipeName = $_POST['recipeName'];
 $recipeSteps = $_POST['recipeSteps'];
+$recipeIngredients = $_POST['recipeIngredients'];
 
 //$recipeName = 'Chocolate Chip Cookies';
 //$recipeSteps = 'test2';
@@ -28,23 +29,23 @@ $stmt->fetch();
 $stmt->close();
 
 if($cnt == 1) {
-    $stmt2 = $mysqli->prepare("UPDATE recipes SET recipe_steps=? WHERE username=? AND recipe_name=?");
+    $stmt2 = $mysqli->prepare("UPDATE recipes SET recipe_steps=?, recipe_ingredients=? WHERE username=? AND recipe_name=?");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
     }
-    $stmt2->bind_param('sss', $recipeSteps, $_SESSION['username'], $recipeName);
+    $stmt2->bind_param('ssss', $recipeSteps, $recipeIngredients, $_SESSION['username'], $recipeName);
     $stmt2->execute();
     $stmt2->close();
 }
 else {
-    $stmt2 = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_steps) VALUES (?, ?, ?)");
+    $stmt2 = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_ingredients, recipe_steps) VALUES (?, ?, ?, ?)");
     if(!$stmt2){
         printf("Query Prep Failed: %s\n", $mysqli->error);
         exit;
     }
 
-    $stmt2->bind_param('sss', $_SESSION['username'], $recipeName, $recipeSteps);
+    $stmt2->bind_param('ssss', $_SESSION['username'], $recipeName, $recipeIngredients, $recipeSteps);
     $stmt2->execute();
     $stmt2->close();
 }

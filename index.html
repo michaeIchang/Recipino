@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,15 +6,16 @@ session_start();
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <style>
-    body {
-        text-align: center;
-    }
-    /*div {*/
-        /*margin: 0 auto;*/
-        /*display: inline;*/
-        /*}*/
+        body {
+            margin: 0 auto;
+            text-align: center;
+        }
+        /* div {*/
+            /*margin: 0 auto;*/
+            /*display: inline;*/
+        /*} */
         form {
-            margin: auto auto;
+            margin: 0 auto;
         }
         .flex-container {
           display: flex;
@@ -36,13 +34,40 @@ session_start();
             width: 525px;
             margin: 0 auto;
         }
-    }
-    #recipes {
-        display: none;
-    }
-    #step-no, #step-back, #step-next {
-        display: none;
-    }
+        #sign-out, #save-recipe, #submit-recipe {
+            display: none;
+        }
+        @media (min-width: 1080px) and (max-width: 2100px) {
+            #carousel {
+                width: 525px;
+                margin: 0 auto;
+            }
+        }
+        #recipes{
+          display: none;
+          width: 75%;
+        }
+        #step-no, #step-back, #step-next {
+            display: none;
+        }
+        #mode {
+          display: none;
+        }
+        /* #list-group {
+          display: none;
+          max-width: 75%;
+        } */
+        /* #form-group {
+          display: none;
+          max-width: 75%;
+        } */
+        /* #url-input, #input-method {
+          margin: auto auto;
+          text-align: center;
+        } */
+        #url-input {
+          display: none;
+        }
 
 
 </style>
@@ -204,16 +229,19 @@ session_start();
                     }
                 }
 
-                var recipesSteps = document.getElementsByTagName("textarea");
-                var recipeSteps = recipesSteps[i].value;
+                var allSteps = document.getElementsByClassName("steps");
+                var allIngredients = document.getElementsByClassName("ingredients");
+                var recipeSteps = allSteps[i].value;
+                var recipeIngredients = allIngredients[i].value;
                 var defaultStepNo = '0';
                 // console.log(recipeSteps);
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("POST", "recipe.php", true);
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xmlHttp.addEventListener("load", sendRecCallBack, false);
-
-                xmlHttp.send("recipeSteps=" + recipeSteps + "&stepNo=" + defaultStepNo);
+                // xmlHttp.addEventListener("load", sendRecCallBack, false);
+                console.log(recipeSteps);
+                console.log(recipeIngredients);
+                xmlHttp.send("steps=" + recipeSteps + "&ingredients=" + recipeIngredients);
             });
 
             $("#save-recipe").click(function () {
@@ -229,68 +257,70 @@ session_start();
                 }
 
                 var recipeName = recipes[i].innerText;
-                var recipesSteps = document.getElementsByTagName("textarea");
+                var recipesSteps = document.getElementsByClassName("steps");
+                var recipesIngredients = document.getElementsByClassName("ingredients");
                 var recipeSteps = recipesSteps[i].value;
+                var recipeIngredients = recipesIngredients[i].value;
                 // console.log(recipeSteps);
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("POST", "saveRecipe.php", true);
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xmlHttp.addEventListener("load", saveRecCallBack, false);
-                xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps);
+                xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps + "&recipeIngredients=" + recipeIngredients);
             });
 
-            $("#step-back").click(function () {
-                var stepNo = document.getElementById("step-no").innerText;
-                var stepArr = stepNo.split(" ");
-
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("POST", "changeStep.php", true);
-                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xmlHttp.addEventListener("load", changeStepCallBack, false);
-                var newStep = parseInt(stepArr[1]) - 1;
-                xmlHttp.send("stepNo=" + newStep);
+            // $("#step-back").click(function () {
+            //     var stepNo = document.getElementById("step-no").innerText;
+            //     var stepArr = stepNo.split(" ");
+            //
+            //     var xmlHttp = new XMLHttpRequest();
+            //     xmlHttp.open("POST", "changeStep.php", true);
+            //     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            //     xmlHttp.addEventListener("load", changeStepCallBack, false);
+            //     var newStep = parseInt(stepArr[1]) - 1;
+            //     xmlHttp.send("stepNo=" + newStep);
                 // console.log(newStep);
-            });
+            // });
 
-            $("#step-next").click(function () {
-                var stepNo = document.getElementById("step-no").innerText;
-                var stepArr = stepNo.split(" ");
-
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.open("POST", "changeStep.php", true);
-                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xmlHttp.addEventListener("load", changeStepCallBack, false);
-                var newStep = parseInt(stepArr[1]) + 1;
-                xmlHttp.send("stepNo=" + newStep);
-                // console.log(newStep);
-            });
+            // $("#step-next").click(function () {
+            //     var stepNo = document.getElementById("step-no").innerText;
+            //     var stepArr = stepNo.split(" ");
+            //
+            //     var xmlHttp = new XMLHttpRequest();
+            //     xmlHttp.open("POST", "changeStep.php", true);
+            //     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            //     xmlHttp.addEventListener("load", changeStepCallBack, false);
+            //     var newStep = parseInt(stepArr[1]) + 1;
+            //     xmlHttp.send("stepNo=" + newStep);
+            //     // console.log(newStep);
+            // });
         });
 
-function changeStepCallBack(event) {
-    var plainText = event.target.responseText;
-    var jsonData = JSON.parse(plainText);
-    console.log(jsonData.stepNo);
-    if (parseInt(jsonData.stepNo) > 0) {
-        document.getElementById("step-back").disabled = false;
-    } else {
-        document.getElementById("step-back").disabled = true;
-    }
+        // function changeStepCallBack(event) {
+        //     var plainText = event.target.responseText;
+        //     var jsonData = JSON.parse(plainText);
+        //     console.log(jsonData.stepNo);
+        //     if (parseInt(jsonData.stepNo) > 0) {
+        //         document.getElementById("step-back").disabled = false;
+        //     } else {
+        //         document.getElementById("step-back").disabled = true;
+        //     }
+        //
+        //     document.getElementById("step-no").innerText = "Step " + jsonData.stepNo;
+        // }
 
-    document.getElementById("step-no").innerText = "Step " + jsonData.stepNo;
-}
+        // function sendRecCallBack(event) {
+        //     var plainText = event.target.responseText;
+        //     var jsonData = JSON.parse(plainText);
+            // console.log(jsonData);
+            // document.getElementById("step-back").style.display = 'inline-block';
+            // document.getElementById("step-no").style.display = 'inline-block';
+            // document.getElementById("step-next").style.display = 'inline-block';
+        // }
 
-function sendRecCallBack(event) {
-    var plainText = event.target.responseText;
-    var jsonData = JSON.parse(plainText);
-    console.log(jsonData.Steps);
-    document.getElementById("step-back").style.display = 'inline-block';
-    document.getElementById("step-no").style.display = 'inline-block';
-    document.getElementById("step-next").style.display = 'inline-block';
-}
-
-function saveRecCallBack(event) {
-    var plainText = event.target.responseText;
-    var jsonData = JSON.parse(plainText);
+        function saveRecCallBack(event) {
+            var plainText = event.target.responseText;
+            var jsonData = JSON.parse(plainText);
             // console.log(jsonData.user);
             // console.log(jsonData.recipeName);
             console.log(jsonData.steps);
@@ -330,23 +360,25 @@ function saveRecCallBack(event) {
             // console.log(jsonData.steps1);
             // console.log(jsonData.recipe2);
             // console.log(jsonData.steps2);
-            var recipeListSteps = document.getElementsByClassName("steps");
-            var recipeListIng = document.getElementsByClassName("ing");
+
+            var ingredientsList = document.getElementsByClassName("ingredients");
+            var stepList = document.getElementsByClassName("steps");
             var i = 0;
             // for (i; i < recipeList.length; ++i) {
                 // if (recipeList[i].id == jsonData[2*i + 1]) {
-                    recipeListSteps[0].value = jsonData.steps1;
-                    recipeListSteps[1].value = jsonData.steps2;
-                    recipeListSteps[2].value = jsonData.steps3;
-                    recipeListSteps[3].value = jsonData.steps4;
-                    recipeListSteps[4].value = jsonData.steps5;
+                    stepList[0].value = jsonData.steps1;
+                    stepList[1].value = jsonData.steps2;
+                    stepList[2].value = jsonData.steps3;
+                    stepList[3].value = jsonData.steps4;
+                    stepList[4].value = jsonData.steps5;
+                    stepList[5].value = jsonData.steps6;
 
-                    recipeListIng[0].value = jsonData.ingredients1;
-                    recipeListIng[1].value = jsonData.ingredients2;
-                    recipeListIng[2].value = jsonData.ingredients3;
-                    recipeListIng[3].value = jsonData.ingredients4;
-                    recipeListIng[4].value = jsonData.ingredients5;
-
+                    ingredientsList[0].value = jsonData.ingredients1;
+                    ingredientsList[1].value = jsonData.ingredients2;
+                    ingredientsList[2].value = jsonData.ingredients3;
+                    ingredientsList[3].value = jsonData.ingredients4;
+                    ingredientsList[4].value = jsonData.ingredients5;
+                    ingredientsList[5].value = jsonData.ingredients6;
 
                     // console.log(jsonData[2*i+1]);
                 // }
@@ -368,11 +400,11 @@ function saveRecCallBack(event) {
                 document.getElementById("sign-out").style.display = 'inline-block';
                 document.getElementById("save-recipe").style.display = 'inline-block';
                 document.getElementById("submit-recipe").style.display = 'inline-block';
+                document.getElementById('mode').style.display = 'block';
+                // document.getElementById('url-input').style.display = 'inline-block';
                 getRecipes();
             }
         }
-
-
 
     </script>
     <!--<h1>Recipino!</h1>-->
@@ -386,8 +418,19 @@ function saveRecCallBack(event) {
             <a class="btn btn-primary btn-lg" id="register" data-toggle="modal" data-target="#registerModal" href="#" role="button">Register</a>
             <a class="btn btn-primary btn-lg" id="sign-in" data-toggle="modal" data-target="#signInModal" href="#" role="button">Sign In</a>
             <a class="btn btn-primary btn-lg" id="sign-out" data-toggle="modal" href="#" role="button">Log Out</a>
-
         </div>
+    </div>
+
+    <div id="mode">
+      <br>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label id="url-label"  class="btn btn-success active">
+          <input type="radio" name="options" id="url" autocomplete="off" checked> URL </input>
+        </label>
+        <label id="manual-label" class="btn btn-success">
+          <input type="radio" name="options" id="manual" autocomplete="off"> Manual </input>
+        </label>
+      </div>
     </div>
 
     <!-- Modal -->
@@ -454,10 +497,11 @@ function saveRecCallBack(event) {
                     <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
                     <button type="button" class="btn btn-primary" id="login-button" data-dismiss="modal">Sign In</button>
                 </div>
+
             </div>
         </div>
     </div>
-
+    <!-- <br> -->
 
     <div id="carousel" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -487,91 +531,103 @@ function saveRecCallBack(event) {
         </div>
 
 
-        <form id="recipes" style="max-width: 75%;">
-            <div class="row">
-                <div class="col-4">
-                    <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="default-recipe" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Chocolate Chip Cookies</a>
-                        <a class="list-group-item list-group-item-action" id="custom-recipe-1" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Custom Recipe #1</a>
-                        <a class="list-group-item list-group-item-action" id="custom-recipe-2" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Custom Recipe #2</a>
-                        <a class="list-group-item list-group-item-action" id="custom-recipe-3" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Custom Recipe #3</a>
-                        <a class="list-group-item list-group-item-action" id="custom-recipe-4" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Custom Recipe #4</a>
 
-                    </div>
+    <form id="url-input">
+      <div class="form-row">
+        <div class="form-group" style="margin: 0 auto;">
+          <label for="recipe-url">URL</label>
+          <input type="text" class="form-control" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
+        </div>
+      </div>
+    </form>
+
+
+    <form id="recipes">
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="default-recipe" data-toggle="list" href="#list-custom" role="tab" aria-controls="home">Chocolate Chip Cookies</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-1" data-toggle="list" href="#list-one" role="tab" aria-controls="profile">Custom Recipe #1</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-2" data-toggle="list" href="#list-two" role="tab" aria-controls="messages">Custom Recipe #2</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-3" data-toggle="list" href="#list-three" role="tab" aria-controls="settings">Custom Recipe #3</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-4" data-toggle="list" href="#list-four" role="tab" aria-controls="settings">Custom Recipe #4</a>
+                    <a class="list-group-item list-group-item-action" id="custom-recipe-5" data-toggle="list" href="#list-five" role="tab" aria-controls="settings">Custom Recipe #5</a>
                 </div>
-                <div class="col-8" style="max-width: 75%">
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                          <label for="recipe-ing-1" style="float: left;">Ingredients</label> 
-                          <label for="recipe-steps-1">Steps</label>
-                          <div class="flex-container">
-                              <textarea class="form-control ing" id="recipe-ing-1" rows="9" placeholder="Ingredients"></textarea>
-
-                              <textarea class="form-control steps" id="recipe-steps-1" rows="9" placeholder="Steps"></textarea>
+            </div>
+            <div class="col-8" style="max-width: 75%">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-custom" role="tabpanel" aria-labelledby="default-recipe">
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="recipe-ing-0"><b>Ingredients</b></label>
+                            <textarea class="form-control ingredients" id="recipe-ing-1" rows="9"></textarea>
                           </div>
-                      </div>
-                      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
-                          <label for="recipe-ing-2" style="float: left;">Ingredients</label> 
-                          <label for="recipe-steps-2">Steps</label>
-                          <div class="flex-container">
-                            <textarea class="form-control ing" id="recipe-ing-2" rows="9" placeholder="Ingredients"></textarea>
-
-                            <textarea class="form-control steps" id="recipe-steps-2" rows="9" placeholder="Steps"></textarea>
-                        </div>  
-                    </div>
-                    <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-                        <label for="recipe-ing-3" style="float: left;">Ingredients</label> 
-                        <label for="recipe-steps-3">Steps</label>
-                        <div class="flex-container">
-                            <textarea class="form-control ing" id="recipe-ing-3" rows="9" placeholder="Ingredients"></textarea>
-
-                            <textarea class="form-control steps" id="recipe-steps-3" rows="9" placeholder="Steps"></textarea>
+                          <div class="form-group col-md-6">
+                            <label for="recipe-steps-0"><b>Steps</b></label>
+                            <textarea class="form-control steps" id="recipe-steps-1" rows="9"></textarea>
+                          </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-                        <label for="recipe-ing-4" style="float: left;">Ingredients</label> 
-                        <label for="recipe-steps-4">Steps</label>
-                        <div class="flex-container">
-                         <textarea class="form-control ing" id="recipe-ing-4" rows="9" placeholder="Ingredients"></textarea>
-
-                         <textarea class="form-control steps" id="recipe-steps-4" rows="9" placeholder="Steps"></textarea>
-                     </div>   
-                 </div>
-                 <div class="tab-pane fade" id="list-set" role="tabpanel" aria-labelledby="list-settings-list">
-                    <label for="recipe-ing-5" style="float: left;">Ingredients</label> 
-                    <label for="recipe-steps-5">Steps</label>
-                    <div class="flex-container">
-                     <textarea class="form-control ing" id="recipe-ing-5" rows="9" placeholder="Ingredients"></textarea>
-
-                     <textarea class="form-control steps id="recipe-steps-5" rows="9" placeholder="Steps"></textarea>
-                 </div>
-             </div>
-         </div>
-     </div>
- </div>
-</form>
-
-
-<!--<form>-->
-    <!--<div>-->
-        <!--<ul class="list-group">-->
-            <!--<li class="list-group-item">Cras justo odio</li>-->
-            <!--<li class="list-group-item">Dapibus ac facilisis in</li>-->
-            <!--<li class="list-group-item">Morbi leo risus</li>-->
-            <!--<li class="list-group-item">Porta ac consectetur ac</li>-->
-            <!--<li class="list-group-item">Vestibulum at eros</li>-->
-            <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-                <!--<label for="exampleTextarea">Recipe Steps</label>-->
-                <!--<textarea class="form-control" id="recipe" rows="3"></textarea>-->
-                <!--</div>-->
-                <!--</form>-->
-                <br>
-
-                <button type="submit" class="btn btn-primary" id="step-back" disabled>Previous Step</button>
-                <div class="alert alert-primary" id="step-no" role="alert">
-                    Step 0
+                    <div class="tab-pane fade" id="list-one" role="tabpanel" aria-labelledby="custom-recipe-1">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="recipe-ing-1"><b>Ingredients</b></label>
+                          <textarea class="form-control ingredients" id="recipe-ing-2" rows="9"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="recipe-steps-1"><b>Steps</b></label>
+                          <textarea class="form-control steps" id="recipe-steps-2" rows="9"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-two" role="tabpanel" aria-labelledby="custom-recipe-2">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="recipe-ing-2"><b>Ingredients</b></label>
+                          <textarea class="form-control ingredients" id="recipe-ing-3" rows="9"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="recipe-steps-2"><b>Steps</b></label>
+                          <textarea class="form-control steps" id="recipe-steps-3" rows="9"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-three" role="tabpanel" aria-labelledby="custom-recipe-3">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="recipe-ing-3"><b>Ingredients</b></label>
+                          <textarea class="form-control ingredients" id="recipe-ing-4" rows="9"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="recipe-steps-3"><b>Steps</b></label>
+                          <textarea class="form-control steps" id="recipe-steps-4" rows="9"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-four" role="tabpanel" aria-labelledby="custom-recipe-4">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="recipe-ing-4"><b>Ingredients</b></label>
+                          <textarea class="form-control ingredients" id="recipe-ing-5" rows="9"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="recipe-steps-4"><b>Steps</b></label>
+                          <textarea class="form-control steps" id="recipe-steps-5" rows="9"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-five" role="tabpanel" aria-labelledby="custom-recipe-5">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="recipe-ing-5"><b>Ingredients</b></label>
+                          <textarea class="form-control ingredients" id="recipe-ing-6" rows="9"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="recipe-steps-5"><b>Steps</b></label>
+                          <textarea class="form-control steps" id="recipe-steps-6" rows="9"></textarea>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" id="step-next">Next Step</button>
 
@@ -582,5 +638,36 @@ function saveRecCallBack(event) {
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
             </div>
-        </body>
-        </html>
+        </div>
+    </form>
+    <br>
+
+    <!-- <button type="submit" class="btn btn-primary" id="step-back" disabled>Previous Step</button>
+    <div class="alert alert-primary" id="step-no" role="alert">
+        Step 0
+    </div>
+    <button type="submit" class="btn btn-primary" id="step-next">Next Step</button> -->
+
+    <script>
+      $('#url-label').click(function (){
+        console.log("Hi");
+        document.getElementById('recipes').style.display = 'none';
+        document.getElementById('url-input').style.display = 'inline-block';
+      });
+
+      $('#manual-label').click(function () {
+        console.log("Bye");
+        document.getElementById('recipes').style.display = 'inline-block';
+        document.getElementById('url-input').style.display = 'none';
+      });
+    </script>
+
+    <br>
+    <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
+    <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
