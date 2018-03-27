@@ -66,16 +66,20 @@ $recipe_steps = '1. Cream the Butter and Sugars
 7. When cool, store/serve appropriately';
 
 $stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_ingredients, recipe_steps) VALUES (?,?,?,?)");
+
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
+
 $stmt->bind_param('ssss', $username, $recipe_name, $recipe_ingredients, $recipe_steps);
+
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #1';
+
 $recipe_ingredients = 'Custom Recipe Ingredients';
 $recipe_steps = 'Custom Recipe Steps';
 
@@ -85,11 +89,14 @@ if(!$stmt){
     exit;
 }
 
+
 $stmt->bind_param('ssss', $username, $recipe_name, $recipe_ingredients, $recipe_steps);
+
 $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #2';
+
 $recipe_ingredients = 'Custom Recipe Ingredients';
 $recipe_steps = 'Custom Recipe Steps';
 
@@ -105,8 +112,10 @@ $stmt->close();
 
 $recipe_name = 'Custom Recipe #3';
 $recipe_steps = 'Custom Recipe';
+$recipe_ing = 'Custom Recipe';
 
 $stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_ingredients, recipe_steps) VALUES (?,?,?,?)");
+
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
@@ -117,6 +126,7 @@ $stmt->execute();
 $stmt->close();
 
 $recipe_name = 'Custom Recipe #4';
+
 $recipe_ingredients = 'Custom Recipe Ingredients';
 $recipe_steps = 'Custom Recipe Steps';
 
@@ -135,12 +145,15 @@ $recipe_ingredients = 'Custom Recipe Ingredients';
 $recipe_steps = 'Custom Recipe Steps';
 
 $stmt = $mysqli->prepare("INSERT INTO recipes (username, recipe_name, recipe_ingredients, recipe_steps) VALUES (?,?,?,?)");
+
 if(!$stmt){
     printf("Query Prep Failed: %s\n", $mysqli->error);
     exit;
 }
 
+
 $stmt->bind_param('ssss', $username, $recipe_name, $recipe_ingredients, $recipe_steps);
+
 $stmt->execute();
 $stmt->close();
 

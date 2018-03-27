@@ -29,6 +29,7 @@ while($stmt->fetch()){
     $arr["recipe" . $cnt] = $recipe_name;
     $arr["ingredients" . $cnt] = $recipe_ingredients;
     $arr["steps" . $cnt] = $recipe_steps;
+    $arr["ingredients" .$cnt] = $recipe_ing;
     $cnt = $cnt + 1;
 }
 
