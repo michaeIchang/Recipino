@@ -65,7 +65,9 @@
           display: none;
         }
 
-
+        #add-url-recipe {
+          display: none;
+        }
 
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -209,6 +211,7 @@
                 document.getElementById("recipes").style.display = 'none';
                 document.getElementById("save-recipe").style.display = 'none';
                 document.getElementById("submit-recipe").style.display = 'none';
+                documenet.getElementById("url-input").style.display = 'none';
                 var xmlHttp = new XMLHttpRequest();
                 xmlHttp.open("POST", "signOut.php", true);
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -268,6 +271,16 @@
                 xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps + "&recipeIngredients=" + recipeIngredients);
             });
 
+            $("#add-url-recipe").click(function (){
+              var url = document.getElementById('recipe-url').value;
+
+              var xmlHttp = new XMLHttpRequest();
+              xmlHttp.open("POST", "processURL.php", true);
+              xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+              xmlHttp.addEventListener("load", urlCallBack, false);
+              xmlHttp.send("url=" + url);
+            });
+
             // $("#step-back").click(function () {
             //     var stepNo = document.getElementById("step-no").innerText;
             //     var stepArr = stepNo.split(" ");
@@ -316,6 +329,12 @@
             // document.getElementById("step-no").style.display = 'inline-block';
             // document.getElementById("step-next").style.display = 'inline-block';
         // }
+
+        function urlCallBack(event) {
+          var plainText = event.target.responseText;
+          var jsonData = JSON.parse(plainText);
+          
+        }
 
         function saveRecCallBack(event) {
             var plainText = event.target.responseText;
@@ -688,6 +707,7 @@
     <br>
     <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
     <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
+    <button type="button" class="btn btn-primary" id="add-url-recipe">Add to Recipes!</button>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

@@ -19,8 +19,8 @@ const char* ssid = "";
 const char* password = "";
 int currPage = 0;
 int numPages;
-const int leftButtonPin = 5; 
-const int rightButtonPin = 6; 
+const int leftButtonPin = D5; 
+const int rightButtonPin = D6; 
 
 /*******************************************************************************
   Function Name  : void base_draw(void)
@@ -36,7 +36,7 @@ void draw_page(void)
 //  epd_set_color(BLACK, WHITE);
 //  epd_clear();
 
-//  if (WiFi.status() == WL_CONNECTED) {
+  if (WiFi.status() == WL_CONNECTED) {
     char buff[] = {'G', 'B', 'K', '3', '2', ':', ' ', 0xc4, 0xe3, 0xba, 0xc3, 0xca, 0xc0, 0xbd, 0xe7, 0};
     epd_set_color(BLACK, WHITE);
     epd_clear();
@@ -46,30 +46,27 @@ void draw_page(void)
     buff[3] = '6';
     buff[4] = '4';
 
-//    HTTPClient http;  //Object of class HTTPClient
-//    http.begin("http://104.131.22.37/recipe.json");
-//    int httpCode = http.GET();
+    HTTPClient http;  //Object of class HTTPClient
+    http.begin("http://104.131.22.37/recipe.json");
+    int httpCode = http.GET();
     //Check the returning code
-//    if (httpCode > 0) 
+    if (httpCode > 0) {
       // Parsing
-      char json[] = "{\"Pages\":[0:[\"Chocolate\"],1: [\"Chip\"],2: [\"Cookies\"]]}";
-      StaticJsonBuffer<200> jsonBuffer;
-      JsonObject& root = jsonBuffer.parseObject(json);
-//      const size_t bufferSize = 20000;
-//      DynamicJsonBuffer jsonBuffer(bufferSize);
-//      JsonObject& root = jsonBuffer.parseObject(http.getString());
-//      const char* stepNo = root["Pages"];
+//      char json[] = "{\"Pages\":[0:[\"Chocolate\"],1: [\"Chip\"],2: [\"Cookies\"]]}";
+//      StaticJsonBuffer<200> jsonBuffer;
+//      JsonObject& root = jsonBuffer.parseObject(json);
+      const size_t bufferSize = 20000;
+      DynamicJsonBuffer jsonBuffer(bufferSize);
+      JsonObject& root = jsonBuffer.parseObject(http.getString());
       //keep track of number of pages
       numPages = root["Pages"].size();
-//      const void * c = "page: " + currPage;
-//      epd_disp_string(c, 0, 0);
-      for (int j = 1; j < root["Pages"][currPage].size(); ++j) {
+      for (int j = 0; j < root["Pages"][currPage].size(); ++j) {
         const char* ingredient = root["Pages"][currPage][j];
-        epd_disp_string(ingredient, 0, 64 * j);
+        epd_disp_string(ingredient, 0, 48 * j);
       }
-//    }
-//    http.end();   //Close connection
-//  }
+    }
+    http.end();   //Close connection
+  }
   epd_udpate();
 }
 
@@ -81,8 +78,8 @@ void setup(void)
 //  pinMode(led, OUTPUT);
 //  digitalWrite(led, LOW);
   
-//  pinMode(leftButtonPin, INPUT);
-//  pinMode(rightButtonPin, INPUT);
+  pinMode(leftButtonPin, INPUT);
+  pinMode(rightButtonPin, INPUT);
 
   epd_init();
   epd_wakeup();
@@ -108,43 +105,37 @@ void loop(void)
   */
   
   draw_page();
+//int leftButtonState = digitalRead(leftButtonPin);
+//int rightButtonState = digitalRead(rightButtonPin);
+//Serial.println("Left:" + leftButtonState);
+//Serial.println("Right:" + rightButtonState);
 //  delay(5000);
-  epd_enter_stopmode();
+//  epd_enter_stopmode();
 //  Serial.println(currPage);
 
   while (1)
   {
     int leftButtonState = digitalRead(leftButtonPin);
     int rightButtonState = digitalRead(rightButtonPin);
-    Serial.println("Left:" + leftButtonState);
-    Serial.println("Right:" + rightButtonState);
     if (leftButtonState == HIGH)
     {
-//      flag = 0;
+        delay(150);
       if (currPage > 0) {
         --currPage;
-//        Serial.println(currPage);
+        break;
       }
-//      digitalWrite(led, LOW);
-//      MC
-//      this may not be the right function to call...
-      epd_wakeup();
-      break;
     }
     else if (rightButtonState == HIGH) {
+      delay(150);
       if (currPage + 1 <= numPages) {
         ++currPage;
-//        Serial.println(currPage);
+        break;
       }
-      epd_wakeup();
-      break;
     }
-    else
-    {
-//      flag = 1;
-//      digitalWrite(led, HIGH);
+    else{
+      delay(100);  
     }
-//    delay(500);
+    
   }
 }
 
