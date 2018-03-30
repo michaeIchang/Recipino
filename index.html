@@ -333,7 +333,7 @@
         function urlCallBack(event) {
           var plainText = event.target.responseText;
           var jsonData = JSON.parse(plainText);
-          
+
         }
 
         function saveRecCallBack(event) {
@@ -695,12 +695,18 @@
         console.log("Hi");
         document.getElementById('recipes').style.display = 'none';
         document.getElementById('url-input').style.display = 'inline-block';
+        document.getElementById('save-recipe').style.display = 'none';
+        document.getElementById('submit-recipe').style.display = 'none';
+        document.getElementById('add-url-recipe').style.display = 'inline-block';
       });
 
       $('#manual-label').click(function () {
         console.log("Bye");
         document.getElementById('recipes').style.display = 'inline-block';
         document.getElementById('url-input').style.display = 'none';
+        document.getElementById('save-recipe').style.display = 'inline-block';
+        document.getElementById('submit-recipe').style.display = 'inline-block';
+        document.getElementById('add-url-recipe').style.display = 'none';
       });
     </script>
 
