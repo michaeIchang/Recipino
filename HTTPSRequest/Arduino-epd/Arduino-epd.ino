@@ -13,14 +13,19 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
+#include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+#include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
+#include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 
 //const int led = 13;                           //user led
 const char* ssid = "";
 const char* password = "";
 int currPage = 0;
 int numPages;
+String content = "";
 const int leftButtonPin = D5; 
 const int rightButtonPin = D6; 
+
 
 /*******************************************************************************
   Function Name  : void base_draw(void)
@@ -86,16 +91,56 @@ void setup(void)
   epd_set_memory(MEM_NAND);
 
   Serial.begin(115200);
+
+  WiFiManager wifiManager;
+  wifiManager.autoConnect("Recipino");
 //  WiFi.begin(ssid, password);
 
 //  while (WiFi.status() != WL_CONNECTED) {
 //    delay(1000);
 //    Serial.println("Connecting...");
 //  }
+
+//  WiFi.macAddress(mac);
+//  clientMac += macToStr(mac);
+
+  /* Access Point configuration */
+//  configManager.setAPName(AP_NAME);
+//  configManager.addParameter("name", config.name, 20);
+//  configManager.addParameter("enabled", &config.enabled);
+//  configManager.addParameter("hour", &config.hour);
+//  configManager.begin(config);
+
+  /* Set Sets the server details */
+//  client.setServer(MQTT_SERVER, 1883);
+//  client.setCallback(callback);
+  
+  /* Build the topic request */
+//  sprintf(topic, "%s%s", "/v1.6/devices/", DEVICE_LABEL);
+
+
 }
 
 void loop(void)
 {
+//  configManager.reset();
+//  configManager.loop();    
+  
+  /* MQTT client reconnection */
+//  if (!client.connected()) {
+//      reconnect();
+//  }
+  
+  /* Sensor Reading */
+//  int value = analogRead(SENSOR);
+  /* Build the payload request */
+//  sprintf(payload, "{\"%s\": %d}", VARIABLE_LABEL, value);
+  /* Publish sensor value to Ubidots */ 
+//  client.publish(topic, payload);
+//  client.loop();
+//  delay(5000);
+
+  
   //MC
   //IDK what this flag is for
 //  char flag = 0;
@@ -127,8 +172,19 @@ void loop(void)
     }
     else if (rightButtonState == HIGH) {
       delay(150);
-      if (currPage + 1 <= numPages) {
+      if (currPage + 1 < numPages) {
         ++currPage;
+        break;
+      }
+    }
+    else if (WiFi.status() == WL_CONNECTED) {
+      HTTPClient http;  //Object of class HTTPClient
+      http.begin("http://104.131.22.37/recipe.json");
+      int httpCode = http.GET();
+      String currContent = http.getString();
+//      Serial.println(currContent);
+      if (currContent != content) {
+        content = currContent;
         break;
       }
     }
