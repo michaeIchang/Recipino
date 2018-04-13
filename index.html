@@ -585,11 +585,27 @@
       <div class="form-row">
         <div class="form-group" style="margin: 0 auto;">
           <label for="recipe-url">URL</label>
-          <input type="text" class="form-control" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
+          <input type="text" class="form-control" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563" size="100">
+
         </div>
       </div>
+        
+        <br><br>
+        Demos:
+        <select id="list" onchange="change();">
+            <option value="https://www.epicurious.com/recipes/food/views/diner-style-western-omelet">Western Omelet (Epicurious)</option>
+            <option value="https://www.foodnetwork.com/recipes/ree-drummond/beef-tacos-2632842">Beef Tacos(foodnetwork)</option>
+            <option value='https://www.allrecipes.com/recipe/80827/easy-garlic-broiled-chicken/?internalSource=streams&referringId=201&referringContentType=recipe%20hub&clickId=st_trending_s'>Garlic Chicken (allrecepis)</option>
+        </select>
     </form>
 
+<script type="text/javascript">
+    function change(){
+        var x = document.getElementById("list").value;
+        document.getElementById("recipe-url").value = x;
+        console.log(x);
+    }
+</script>
 
     <form id="recipes">
       <br><br><br><br><br>
