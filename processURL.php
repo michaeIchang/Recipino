@@ -1,10 +1,10 @@
 <?php
 include('./simple_html_dom.php');
-// $url = $_POST['url'];
-// $host = parse_url($url, PHP_URL_HOST);
-
-$url = 'http://www.geniuskitchen.com/recipe/kosher-perfect-matzo-balls-94412';
+$url = $_POST['url'];
 $host = parse_url($url, PHP_URL_HOST);
+
+// $url = 'http://www.geniuskitchen.com/recipe/kosher-perfect-matzo-balls-94412';
+// $host = parse_url($url, PHP_URL_HOST);
 // echo $host;
 // get DOM from URL or file
 $html = file_get_html($url);
