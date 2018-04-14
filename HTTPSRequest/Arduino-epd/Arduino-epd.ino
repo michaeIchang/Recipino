@@ -92,6 +92,7 @@ void setup(void)
 
   Serial.begin(115200);
 
+//  WiFi.disconnect();
   WiFiManager wifiManager;
   wifiManager.autoConnect("Recipino");
 //  WiFi.begin(ssid, password);
