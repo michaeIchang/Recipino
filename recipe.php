@@ -40,6 +40,10 @@ for ($i = 0; $i < count($steps); $i++) {
     $words = explode(' ', $steps[$i]);
 
     for ($j = 0; $j < $lineCnt; ++$j) {
+      if (count($stepPage) >= 8) {
+        $allStepPages[] = $stepPage;
+        $stepPage = array();
+      }
         $line = "";
         while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
             $line = $line . array_shift($words) . ' ';
@@ -47,9 +51,10 @@ for ($i = 0; $i < count($steps); $i++) {
         if ($line != "") {
           $stepPage [] = $line;
         }
+
     }
 
-    if (count($stepPage) >= 8 || ($i == (count($steps) - 1))) {
+    if (($i == (count($steps) - 1)) {
       $allStepPages[] = $stepPage;
       $stepPage = array();
     }
