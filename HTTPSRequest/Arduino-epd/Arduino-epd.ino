@@ -165,7 +165,7 @@ void loop(void)
     int rightButtonState = digitalRead(rightButtonPin);
     if (leftButtonState == HIGH)
     {
-        delay(150);
+      delay(150);
       if (currPage > 0) {
         --currPage;
         break;
@@ -175,6 +175,7 @@ void loop(void)
       delay(150);
       if (currPage + 1 < numPages) {
         ++currPage;
+        Serial.println("press");
         break;
       }
     }
@@ -186,12 +187,15 @@ void loop(void)
 //      Serial.println(currContent);
       if (currContent != content) {
         content = currContent;
+//        Serial.println(content);
         break;
       }
     }
     else{
       delay(100);  
     }
+
+    
     
   }
 }

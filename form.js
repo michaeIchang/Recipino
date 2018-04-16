@@ -149,6 +149,20 @@
             // alert( "Handler for .click() called." );
             // e.preventDefault()
 
+            if (document.getElementById("preview").style.display !== 'none') {
+              var ingredients = document.getElementById("ingredients").value;
+              var steps = document.getElementById("steps").value;
+              var xmlHttp = new XMLHttpRequest();
+              xmlHttp.open("POST", "recipe.php", true);
+              xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+              // xmlHttp.addEventListener("load", sendRecCallBack, false);
+              // console.log(recipeSteps);
+              // console.log(recipeIngredients);
+              xmlHttp.send("steps=" + steps + "&ingredients=" + ingredients);
+              return;
+            }
+
+
             var recipes = document.getElementsByClassName("list-group-item");
             var i = 0;
             for (i; i < recipes.length; ++i) {
@@ -161,7 +175,7 @@
             var allIngredients = document.getElementsByClassName("ingredients");
             var recipeSteps = allSteps[i].value;
             var recipeIngredients = allIngredients[i].value;
-            var defaultStepNo = '0';
+            // var defaultStepNo = '0';
             // console.log(recipeSteps);
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("POST", "recipe.php", true);
@@ -304,10 +318,10 @@
         // console.log(jsonData.recipe2);
         // console.log(jsonData.steps2);
         var tab_list = document.getElementById("list-tab");
-        tab_list.innerText = "";
+        tab_list.innerHTML = "";
         // console.log("hi");
         var tab_content = document.getElementById("nav-tab-content");
-        tab_list.innerText = "";
+        tab_content.innerHTML = "";
 
       //   <div class="tab-pane fade show active" id="list-custom" role="tabpanel" aria-labelledby="default-recipe">
       //     <div class="form-row">
@@ -328,12 +342,19 @@
 
         // for (i; i < recipeList.length; ++i) {
             // if (recipeList[i].id == jsonData[2*i + 1]) {
+                if (jsonData.recipe.length > 9) {
+                  $("#list-tab-div").attr("style", "height: 400px; overflow-y: scroll;");
+                }
+
                 for (var i = 0; i < jsonData.recipe.length; ++i) {
                   //create tab
                   var tab = document.createElement("a");
                   var tab_text = document.createTextNode(jsonData.recipe[i]);
                   tab.appendChild(tab_text);
                   tab.className = "list-group-item list-group-item-action";
+                  if (i == 0) {
+                    tab.className = "list-group-item list-group-item-action active show";
+                  }
                   // $(".list-group-item").attr("class", "list-group-item list-group-item-action");
                   // tab.data-toggle = "list";
                   $(".list-group-item").attr("data-toggle", "list");
@@ -343,7 +364,10 @@
                   tab_list.appendChild(tab);
 
                   var tab_pane = document.createElement("div");
-                  tab_pane.className = "tab-pane fade show";
+                  tab_pane.className = "tab-pane fade";
+                  if (i == 0) {
+                    tab_pane.className = "tab-pane fade show active";
+                  }
                   tab_pane.role = "tabpanel";
                   tab_pane.id = "recipe-" + (i+1);
 
@@ -364,12 +388,15 @@
 
                   var ingText = document.createElement("textarea");
                   ingText.className = "form-control";
+                  ingText.className += " ingredients";
+                  // $(".list-group-item").attr("role", "tab");
                   ingText.id = "ing-" + (i + 1);
                   ingText.rows = "9";
                   ingText.value = jsonData.ingredients[i];
                   ingText.style.height = "350px";
                   var stepText = document.createElement("textarea");
                   stepText.className = "form-control";
+                  stepText.className += " steps";
                   stepText.id = "step-" + (i + 1);
                   stepText.rows = "9";
                   stepText.value = jsonData.steps[i];
@@ -404,6 +431,7 @@
                 // console.log(jsonData[2*i+1]);
             // }
         // }
+        $(".list-group-item").attr("data-toggle", "list");
     }
 
     function loginCallBack (event) {
@@ -524,6 +552,13 @@
       // document.getElementById('url-next').style.display = 'none';
       // window.scrollTo(0,1000);
       // document.getElementsByClassName("nav-link")[1].class = "nav-link active";
+      // var tab_list = document.getElementById("list-tab");
+      // var myNode = document.getElementById("foo");
+      // while (tab_list.firstChild) {
+      //     tab_list.removeChild(tab_list.firstChild);
+      // }
+      // var tab_content = document.getElementById("nav-tab-content");
+      // tab_content.innerText = "";
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open("POST", "getRecipes.php", true);
       xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

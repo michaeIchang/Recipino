@@ -14,7 +14,7 @@
             text-align: center;
             height: 100%;
             width: 100%;
-            background-image: url('background-1.jpg');
+            background-image: url('background-2.jpg');
         }
         /* div {*/
             /*margin: 0 auto;*/
@@ -177,6 +177,7 @@
             <!-- <div class="form-row"> -->
               <div class="form-group" style="width: 50%; margin: 0 auto;">
                 <!-- <br><br><br><br><br><br><br><br -->
+                <br>
                 <label for="recipe-url"><b>URL<b></label>
                 <a>
                   <input type="text" class="form-control" oninput="recipeParse();" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
@@ -185,6 +186,7 @@
                 <!-- <a class="btn btn-primary" href="#preview-edit" onclick="recipeParse();" role="button">Next</a> -->
                 <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
               </div>
+
             <!-- </div> -->
           </form>
         </div>
@@ -300,8 +302,10 @@
             <br><br>
             <label><b>Preview</b></label>
             <br>
-            <textarea id="ingredients" rows="15" cols="30"></textarea>
-            <textarea id="steps" rows="15" cols="30"></textarea>
+            <div style="display: flex; width: 60%; margin: 0 auto; justify-content: space-between">
+              <textarea class="form-control" id="ingredients" rows="12" cols="10" ></textarea>
+              <textarea class="form-control" id="steps" rows="12" cols="10"></textarea>
+            </div>
             <!-- <div class="row">
               <div class="col-4" style="height: 300px; overflow-y: scroll;">
                 <div id="list-links" class="list-group">
@@ -330,14 +334,13 @@
             </div> -->
 
             <div class="row">
-              <div class="col-4" style="height: 400px; overflow-y: scroll;">
+              <div class="col-4" style="height: 400px;">
                 <div class="list-group" id="list-tab" role="tablist">
                 </div>
               </div>
               <div class="col-8">
                 <div class="tab-content" id="nav-tab-content">
 
-                </div>
               </div>
             </div>
             <br><br><br><br>
@@ -354,10 +357,14 @@
         <!-- <h4>Save or Send Recipe to Recipino</h4> -->
         <!-- <p>...</p> -->
         <br>
-        <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
-        <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
-        <br><br><br>
+        <br>
     </div>
+    <br><br>
+
+    <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
+    <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
+
+    <br><br><br>
 
     <!-- <br>
     <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>

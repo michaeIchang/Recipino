@@ -1,7 +1,8 @@
 <?php
-include('./simple_html_dom.php');
-$url = $_POST['url'];
-$host = parse_url($url, PHP_URL_HOST);
+// include('./simple_html_dom.php');
+// $url = $_POST['url'];
+// $host = parse_url($url, PHP_URL_HOST);
+
 
 
 // $url = 'http://www.geniuskitchen.com/recipe/kosher-perfect-matzo-balls-94412';
@@ -11,7 +12,7 @@ $host = parse_url($url, PHP_URL_HOST);
 // $host = parse_url($url, PHP_URL_HOST);
 // echo $host;
 // get DOM from URL or file
-$html = file_get_html($url);
+// $html = file_get_html($url);
 // echo $html;
 
 // $ingGroups = $html->find('ol[class=ingredient-groups]');
@@ -21,79 +22,79 @@ $html = file_get_html($url);
 //     foreach($ingredients->find('li') as $ingredient)
 //       echo $ingredient;
 
-$ingredients = array();
-$steps = array();
-
-if ($host == 'www.epicurious.com') {
-  //Epicurious
-  foreach($html->find('li[class=ingredient]') as $element) {
-         $ingredients[] = trim($element -> plaintext);
-  }
-
-  //Epicurious
-  foreach($html->find('li[class=preparation-step]') as $element) {
-         $steps[] = trim($element -> plaintext);
-  }
-}
-
-else if ($host == 'www.foodnetwork.com') {
-  // food-network-kitchen
-  foreach($html->find('li[o-Ingredients__a-ListItem]') as $ingredient) {
-    $ingredients[] = trim($ingredient -> plaintext);
-    echo trim($ingredient -> plaintext);
-  }
-
-  //food-network-kitchen
-  // $stepSection = $html->find('section[id=mod-recipe-method-1]');
-  // $stepDiv = $html->find('div');
-  foreach($html->find('p') as $step) {
-    // echo "step";
-    // if ($step) != 'Watch how to make this recipe.') {
-      // $steps = explode('\n', $stepDiv -> plaintext);
-      $stepText = ($step->plaintext);
-      if (strpos($stepText, 'Copyright 2018 Television Food Network')) {
-        break;
-      }
-      if (!strpos($stepText, 'Watch how to make this recipe')) {
-        $steps[] = trim($stepText);
-        // echo trim($stepText);
-      }
-    // }
-    // echo "step";
-  }
-}
-// echo "        ";
-
-else if ($host == 'www.allrecipes.com') {
-  foreach($html->find('span[class=recipe-ingred_txt added]') as $element) {
-      $ingredients[] = trim($element -> plaintext);
-  }
-  foreach($html->find('span[class=recipe-directions__list--item]') as $element) {
-      $steps[] = trim($element -> plaintext);
-  }
-}
-
-else if ($host == 'www.chowhound.com') {
-  // $ingredientDiv = $html -> find('div[class=tasty-recipe-ingredients]');
-  foreach($html->find('li[itemprop=ingredients]') as $element) {
-    $ingredients[] = trim($element -> plaintext);
-    // echo $ingredients[0];
-  }
-  $stepDiv = $html -> find('div[itemprop=recipeInstructions]');
-  // foreach($stepDiv->find('li') as $element) {
-    $steps[] = explode('\n', trim($stepDiv->plaintext));
-  // }
-}
-
-else if ($host == 'www.geniuskitchen.com') {
-  foreach($html->find('ul[class=ingredient-list]') as $element) {
-    $ingredients[] = trim($element -> plaintext);
-  }
-  foreach($html->find('ol[class=expanded]') as $element) {
-    // $steps[] = ($element -> plaintext);
-    // echo $element;
-  }
-}
+// $ingredients = array();
+// $steps = array();
+//
+// if ($host == 'www.epicurious.com') {
+//   //Epicurious
+//   foreach($html->find('li[class=ingredient]') as $element) {
+//          $ingredients[] = trim($element -> plaintext);
+//   }
+//
+//   //Epicurious
+//   foreach($html->find('li[class=preparation-step]') as $element) {
+//          $steps[] = trim($element -> plaintext);
+//   }
+// }
+//
+// else if ($host == 'www.foodnetwork.com') {
+//   // food-network-kitchen
+//   foreach($html->find('li[o-Ingredients__a-ListItem]') as $ingredient) {
+//     $ingredients[] = trim($ingredient -> plaintext);
+//     echo trim($ingredient -> plaintext);
+//   }
+//
+//   //food-network-kitchen
+//   // $stepSection = $html->find('section[id=mod-recipe-method-1]');
+//   // $stepDiv = $html->find('div');
+//   foreach($html->find('p') as $step) {
+//     // echo "step";
+//     // if ($step) != 'Watch how to make this recipe.') {
+//       // $steps = explode('\n', $stepDiv -> plaintext);
+//       $stepText = ($step->plaintext);
+//       if (strpos($stepText, 'Copyright 2018 Television Food Network')) {
+//         break;
+//       }
+//       if (!strpos($stepText, 'Watch how to make this recipe')) {
+//         $steps[] = trim($stepText);
+//         // echo trim($stepText);
+//       }
+//     // }
+//     // echo "step";
+//   }
+// }
+// // echo "        ";
+//
+// else if ($host == 'www.allrecipes.com') {
+//   foreach($html->find('span[class=recipe-ingred_txt added]') as $element) {
+//       $ingredients[] = trim($element -> plaintext);
+//   }
+//   foreach($html->find('span[class=recipe-directions__list--item]') as $element) {
+//       $steps[] = trim($element -> plaintext);
+//   }
+// }
+//
+// else if ($host == 'www.chowhound.com') {
+//   // $ingredientDiv = $html -> find('div[class=tasty-recipe-ingredients]');
+//   foreach($html->find('li[itemprop=ingredients]') as $element) {
+//     $ingredients[] = trim($element -> plaintext);
+//     // echo $ingredients[0];
+//   }
+//   $stepDiv = $html -> find('div[itemprop=recipeInstructions]');
+//   // foreach($stepDiv->find('li') as $element) {
+//     $steps[] = explode('\n', trim($stepDiv->plaintext));
+//   // }
+// }
+//
+// else if ($host == 'www.geniuskitchen.com') {
+//   foreach($html->find('ul[class=ingredient-list]') as $element) {
+//     $ingredients[] = trim($element -> plaintext);
+//   }
+//   foreach($html->find('ol[class=expanded]') as $element) {
+//     // $steps[] = ($element -> plaintext);
+//     // echo $element;
+//   }
+// }
 
 // else if ($host == 'www.thekitchn.com')
 //   foreach($html->find('ul[class=PostRecipeIngredientGroup__ingredients]') as $element) {
@@ -188,16 +189,16 @@ $ingredients = array_filter($allIngredientPages);
 $steps = array_filter($allStepPages);
 $arr["Pages"] = array_merge($ingredients, $steps);
 
-// for ($i = 0; $i < count($arr["Pages"]); ++$i) {
-//   $pageIndex = ($i + 1) . "/" . count($arr["Pages"]);
-//   $numLines = count($arr["Pages"][$i]);
-//   // echo $numLines . " ";
-//   // echo "here";
-//   for ($j = 0; (11 - ($numLines + $j)) > 0; ++$j) {
-//         $arr["Pages"][$i][] = " ";
-//   }
-//
-//   $arr["Pages"][$i][] = str_repeat(" ", 93 - strlen($pageIndex)) . $pageIndex;
+for ($i = 0; $i < count($arr["Pages"]); ++$i) {
+  $pageIndex = ($i + 1) . "/" . count($arr["Pages"]);
+  $numLines = count($arr["Pages"][$i]);
+  // echo $numLines . " ";
+  // echo "here";
+  for ($j = 0; (11 - ($numLines + $j)) > 0; ++$j) {
+        $arr["Pages"][$i][] = " ";
+  }
+
+  $arr["Pages"][$i][] = str_repeat(" ", 93 - strlen($pageIndex)) . $pageIndex;
 // }
 
 file_put_contents('recipe.json', json_encode($arr));
