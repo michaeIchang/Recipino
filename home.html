@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
     <title>Recipino</title>
     <!-- Required meta tags -->
-    <!-- <meta charset="utf-8"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -83,13 +82,24 @@
         }
 
         h1 {
-          color: beige;
+          color: BurlyWood;
           /* font-weight: bold; */
         }
 
-        #recipes {
+        #user-recipes {
+          width: 100%;
           display: none;
         }
+
+        .card-text {
+          text-align: left;
+        }
+
+        /* #preview { */
+          /* visibility: hidden; */
+        /* } */
+
+
 
     </style>
     <link href="/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -103,35 +113,33 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 
 </head>
-<body data-spy="scroll" data-target="#main-nav" data-offset="0" onLoad="window.scroll(0, 80)">
+<body data-spy="scroll" data-target="#main-nav" data-offset="10" onload="window.scrollTo(0,0)">
     <!-- Scrollspy Nav -->
+
     <nav id="main-nav" class="navbar navbar-light bg-light">
       <!-- <a class="navbar-brand" href="#">Navbar</a> -->
       <ul class="nav nav-pills">
-        <a class="navbar-brand" href="#options">Recipino</a>
+        <a class="navbar-brand" href="/home.html">Recipino</a>
         <li class="nav-item" id="recipe-type-section">
-          <a class="nav-link active" href="#options">1: Recipe Input Options</a>
+          <a class="nav-link active" href="#options">Step 1: Recipe Options</a>
         </li>
         <li class="nav-item" id="recipe-input-section">
-          <a class="nav-link" href="#input">2: Recipe Selection</a>
+          <a class="nav-link" href="#input">Step 2: Recipe Input</a>
         </li>
-        <li class="nav-item" id="recipe-preview-section">
+        <!-- <li class="nav-item" id="recipe-preview-section">
           <a class="nav-link" href="#preview-edit">3: Recipe Preview</a>
-        </li>
-        <!-- <li class="nav-item" id="recipe-submit-section">
-          <a class="nav-link" href="#submit">4:Send to Recipino</a>
         </li> -->
+        <li class="nav-item" id="profile">
+          <a class="nav-link" href="/profile.html">Profile</a>
+        </li>
         <li class="nav-item" id="sign-out">
           <a class="nav-link" href="#logout">Logout</a>
         </li>
       </ul>
     </nav>
-    <br>
-    <br>
-    <br>
     <div class="nav-section" id="options">
       <br><br><br>
-      <h1><b>Choose Recipe Input Type</b></h4>
+      <h1><b>Select a Recipe Input Method</b></h1>
 
       <div class="card-deck">
         <div class="card" id="url-label">
@@ -139,157 +147,217 @@
           <img class="card-img-top" src="./Logos.png" alt="FoodNetwork, Epicurious, AllRecipes, Chowhound, and Genius Kitchen">
           <div class="card-body">
             <h5 class="card-title">Got a URL?</h5>
-            <p class="card-text">Found a recipe online? Just click here, give us the URL, and we'll take it from there. We support your favorite
-                                 recipe websites like FoodNetwork, Epicurious, AllRecipes, and more! For a full list of websites that we support,
-                                 click <a href="/support"><b><i>here</i></b></a>.
+            <p class="card-text">Found a recipe online? Just click here, give us the URL, and we'll take it from there.
             </p>
-            <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+            <p class="card-text"><small class="text-muted">We support your favorite recipe websites like FoodNetwork, Epicurious,
+                                                           AllRecipes, and more! For a full list of websites that we support,
+                                                           click <a href="/support"><b><i>here</i></b>.</small></p></a>
             <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
           </div>
         </div>
-        <div class="card" id="manual-label">
+        <div class="card" id="text-label">
           <a href="#input"/>
           <img class="card-img-top" src="./Lemon Drops.jpg" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">Manage Your Recipes</h5>
-            <p class="card-text">Click here to edit your favorite recipes. </p>
+            <h5 class="card-title">Saved Recipes</h5>
+            <p class="card-text">Click here to select one of your favorite recipes. </p>
             <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
             <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
           </div>
         </div>
       </div>
     </div>
-    <br><br><br>
+
     <div class="nav-section" id="input">
       <br><br><br>
       <h1><b>Select a Recipe</b></h1>
         <!-- url input -->
-        <form id="url-input">
-          <div class="form-row">
-            <div class="form-group" style="margin: 0 auto;">
-              <br><br><br><br><br><br><br><br>
-              <label for="recipe-url">URL</label>
-              <input type="text" class="form-control" id="recipe-url" oninput="recipeParse();" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
-              <br>
-              <a class="btn btn-primary" href="#preview-edit" role="button">Next</a>
-              <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            </div>
-          </div>
-        </form>
+        <div id="url-input-form" style="margin: 0 auto; width:100%;">
+          <form style="margin: 0 auto; width:100%;">
+            <!-- <div class="form-row"> -->
+              <div class="form-group" style="width: 50%; margin: 0 auto;">
+                <!-- <br><br><br><br><br><br><br><br -->
+                <label for="recipe-url"><b>URL<b></label>
+                <a>
+                  <input type="text" class="form-control" oninput="recipeParse();" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
+                </a>
+                <!-- <br> -->
+                <!-- <a class="btn btn-primary" href="#preview-edit" onclick="recipeParse();" role="button">Next</a> -->
+                <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+              </div>
+            <!-- </div> -->
+          </form>
+        </div>
         <!-- text input -->
-        <form id="recipes" style="margin: 0 auto;">
-            <div class="form-group col-md-4" id="list-tab" role="tablist">
-              <label for="inputState">Choose a Recipe</label>
-              <select id="list-tab" class="form-control" onchange="location = this.value;" role="tablist">
-                <option value="#list-custom" role="tab" selected>Chocolate Chip Cookies</option>
-                <option value="#list-one" role="tab">Custom Recipe #1</option>
-                <option>Custom Recipe #2</option>
-                <option>Custom Recipe #3</option>
-                <option>Custom Recipe #4</option>
-                <option>Custom Recipe #5</option>
-              </select>
-            </div>
-            <div class="row">
-                <div class="col-8" style="max-width: 75%">
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="list-custom" role="tabpanel" aria-labelledby="default-recipe">
+        <div id="saved-recipes" style="margin: 0 auto; width: 100%; z-index: 10;">
+          <!-- <form style="margin: 0 auto; width: 100%;" > -->
+              <!-- <div class="form-group" id="list-tab" role="tablist" style="margin: 0 auto; width:100%">
+              <br><br> -->
+                <!-- <br><br><br><br><br><br><br><br> -->
+                <!-- <label for="inputState">Choose a Recipe</label> -->
+                <!-- <a> -->
+                  <!-- <select id="list-tab" class="form-control" onchange="location = this.value;" role="tablist" style="width: 50%; margin: 0 auto;">
+                    <option value="#list-custom" role="tab" selected>Chocolate Chip Cookies</option>
+                    <option value="#list-one" role="tab">Custom Recipe #1</option>
+                    <option>Custom Recipe #2</option>
+                    <option>Custom Recipe #3</option>
+                    <option>Custom Recipe #4</option>
+                    <option>Custom Recipe #5</option>
+                  </select> -->
+                <!-- </a> -->
+              <!-- </div> -->
+              <!-- <div class="row">
+                  <div class="col-8" style="max-width: 75%">
+                      <div class="tab-content" id="nav-tabContent">
+                          <div class="tab-pane fade show active" id="list-custom" role="tabpanel" aria-labelledby="default-recipe">
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  <label for="recipe-ing-0"><b>Ingredients</b></label>
+                                  <textarea class="form-control ingredients" id="recipe-ing-1" rows="9"></textarea>
+                                </div>
+                                <div class="form-group col-md-6">
+                                  <label for="recipe-steps-0"><b>Steps</b></label>
+                                  <textarea class="form-control steps" id="recipe-steps-1" rows="9"></textarea>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="tab-pane fade" id="list-one" role="tabpanel" aria-labelledby="custom-recipe-1">
                             <div class="form-row">
                               <div class="form-group col-md-6">
-                                <label for="recipe-ing-0"><b>Ingredients</b></label>
-                                <textarea class="form-control ingredients" id="recipe-ing-1" rows="9"></textarea>
+                                <label for="recipe-ing-1"><b>Ingredients</b></label>
+                                <textarea class="form-control ingredients" id="recipe-ing-2" rows="9"></textarea>
                               </div>
                               <div class="form-group col-md-6">
-                                <label for="recipe-steps-0"><b>Steps</b></label>
-                                <textarea class="form-control steps" id="recipe-steps-1" rows="9"></textarea>
+                                <label for="recipe-steps-1"><b>Steps</b></label>
+                                <textarea class="form-control steps" id="recipe-steps-2" rows="9"></textarea>
                               </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="list-one" role="tabpanel" aria-labelledby="custom-recipe-1">
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="recipe-ing-1"><b>Ingredients</b></label>
-                              <textarea class="form-control ingredients" id="recipe-ing-2" rows="9"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="recipe-steps-1"><b>Steps</b></label>
-                              <textarea class="form-control steps" id="recipe-steps-2" rows="9"></textarea>
+                          </div>
+                          <div class="tab-pane fade" id="list-two" role="tabpanel" aria-labelledby="custom-recipe-2">
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="recipe-ing-2"><b>Ingredients</b></label>
+                                <textarea class="form-control ingredients" id="recipe-ing-3" rows="9"></textarea>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="recipe-steps-2"><b>Steps</b></label>
+                                <textarea class="form-control steps" id="recipe-steps-3" rows="9"></textarea>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="tab-pane fade" id="list-two" role="tabpanel" aria-labelledby="custom-recipe-2">
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="recipe-ing-2"><b>Ingredients</b></label>
-                              <textarea class="form-control ingredients" id="recipe-ing-3" rows="9"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="recipe-steps-2"><b>Steps</b></label>
-                              <textarea class="form-control steps" id="recipe-steps-3" rows="9"></textarea>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="tab-pane fade" id="list-three" role="tabpanel" aria-labelledby="custom-recipe-3">
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="recipe-ing-3"><b>Ingredients</b></label>
-                              <textarea class="form-control ingredients" id="recipe-ing-4" rows="9"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="recipe-steps-3"><b>Steps</b></label>
-                              <textarea class="form-control steps" id="recipe-steps-4" rows="9"></textarea>
+                          <div class="tab-pane fade" id="list-three" role="tabpanel" aria-labelledby="custom-recipe-3">
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="recipe-ing-3"><b>Ingredients</b></label>
+                                <textarea class="form-control ingredients" id="recipe-ing-4" rows="9"></textarea>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="recipe-steps-3"><b>Steps</b></label>
+                                <textarea class="form-control steps" id="recipe-steps-4" rows="9"></textarea>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="tab-pane fade" id="list-four" role="tabpanel" aria-labelledby="custom-recipe-4">
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="recipe-ing-4"><b>Ingredients</b></label>
-                              <textarea class="form-control ingredients" id="recipe-ing-5" rows="9"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="recipe-steps-4"><b>Steps</b></label>
-                              <textarea class="form-control steps" id="recipe-steps-5" rows="9"></textarea>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="tab-pane fade" id="list-five" role="tabpanel" aria-labelledby="custom-recipe-5">
-                          <div class="form-row">
-                            <div class="form-group col-md-6">
-                              <label for="recipe-ing-5"><b>Ingredients</b></label>
-                              <textarea class="form-control ingredients" id="recipe-ing-6" rows="9"></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                              <label for="recipe-steps-5"><b>Steps</b></label>
-                              <textarea class="form-control steps" id="recipe-steps-6" rows="9"></textarea>
+                          <div class="tab-pane fade" id="list-four" role="tabpanel" aria-labelledby="custom-recipe-4">
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="recipe-ing-4"><b>Ingredients</b></label>
+                                <textarea class="form-control ingredients" id="recipe-ing-5" rows="9"></textarea>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="recipe-steps-4"><b>Steps</b></label>
+                                <textarea class="form-control steps" id="recipe-steps-5" rows="9"></textarea>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="btn btn-primary" href="#preview-edit" role="button">Next</a>
-        </form>
-      </div>
-      <div class="nav-section" id="preview-edit">
-        <h4>Preview and Edit</h4>
-        preview of pages
-        <div id="preview" class="bd-example" style="width: 60%; margin: 0 auto;">
-          <div class="row">
-            <div class="col-4" style="height: 300px; overflow-y: scroll;">
-              <div id="list-links" class="list-group">
-              </div>
-            </div>
-            <div class='col-8'>
-              <div id="list-pages" data-spy="scroll" data-target="#list-links" data-offset="0" class="scrollspy-example" style="text-align: left; height: 300px; overflow-y: scroll;">
-              </div>
-            </div>
-          </div>
+                          <div class="tab-pane fade" id="list-five" role="tabpanel" aria-labelledby="custom-recipe-5">
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="recipe-ing-5"><b>Ingredients</b></label>
+                                <textarea class="form-control ingredients" id="recipe-ing-6" rows="9"></textarea>
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="recipe-steps-5"><b>Steps</b></label>
+                                <textarea class="form-control steps" id="recipe-steps-6" rows="9"></textarea>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+              <!-- <br> -->
+              <!-- <a class="btn btn-primary" href="#preview-edit" role="button">Next</a> -->
+          <!-- </form> -->
         </div>
-      </div>
-      <div class="nav-section" id="submit">
-        <h4>Save or Send Recipe to Recipino</h4>
-        <p>...</p>
-      </div>
+        <!-- <br><br><br><br><br><br><br><br><br><br> -->
+      <!-- </div> -->
+      <!-- <div class="nav-section" id="preview-edit">
+        <br><br><br>
+        <h1><b>Preview and Edit</b></h1> -->
+
+
+        <a>
+          <div id="preview" class="bd-example" style="width: 100%; margin: 0 auto;">
+            <br><br>
+            <label><b>Preview</b></label>
+            <br>
+            <textarea id="ingredients" rows="15" cols="30"></textarea>
+            <textarea id="steps" rows="15" cols="30"></textarea>
+            <!-- <div class="row">
+              <div class="col-4" style="height: 300px; overflow-y: scroll;">
+                <div id="list-links" class="list-group">
+                </div>
+              </div>
+              <div class='col-8'>
+                <div id="list-pages" data-spy="scroll" data-target="#list-links" data-offset="0" class="scrollspy-example" style="text-align: left; background-color: white; height: 300px; overflow-y: scroll;">
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div id="user-recipes" class="bd-example" style="width: 100%; margin: 0 auto;">
+            <br>
+            <!-- <label><b>Saved Recipes</b></label> -->
+            <br>
+
+            <!-- <div class="row">
+              <div class="col-4" style="height: 300px; overflow-y: scroll; background-color: white;">
+                <div id="list-links" class="list-group">
+                </div>
+              </div>
+              <div class='col-8'>
+                <textarea id="ingredients" rows="15" cols="30"></textarea>
+                <textarea id="steps" rows="15" cols="30"></textarea>
+              </div>
+            </div> -->
+
+            <div class="row">
+              <div class="col-4" style="height: 400px; overflow-y: scroll;">
+                <div class="list-group" id="list-tab" role="tablist">
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="tab-content" id="nav-tab-content">
+
+                </div>
+              </div>
+            </div>
+            <br><br><br><br>
+          </div>
+
+
+
+
+          <!-- </div> -->
+        </a>
+        <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+      <!-- </div> -->
+      <!-- <div class="nav-section" id="submit"> -->
+        <!-- <h4>Save or Send Recipe to Recipino</h4> -->
+        <!-- <p>...</p> -->
+        <br>
+        <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
+        <button type="submit" class="btn btn-primary" id="submit-recipe">Send to Recipino!</button>
+        <br><br><br>
+    </div>
 
     <!-- <br>
     <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>

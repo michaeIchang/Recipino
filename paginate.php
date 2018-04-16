@@ -1,12 +1,14 @@
 <?php
 include('./simple_html_dom.php');
 $url = $_POST['url'];
+$host = parse_url($url, PHP_URL_HOST);
+
 
 // $url = 'http://www.geniuskitchen.com/recipe/kosher-perfect-matzo-balls-94412';
 // $url = 'https://www.epicurious.com/recipes/food/views/classic-omelette-15068';
 // $url = 'https://www.foodnetwork.com/recipes/food-network-kitchen/cadbury-deviled-eggs-5119490';
 // $url = 'https://www.foodnetwork.com/recipes/amy-thielen/maple-bread-with-soft-cheese-2224757';
-$host = parse_url($url, PHP_URL_HOST);
+// $host = parse_url($url, PHP_URL_HOST);
 // echo $host;
 // get DOM from URL or file
 $html = file_get_html($url);
@@ -38,7 +40,7 @@ else if ($host == 'www.foodnetwork.com') {
   // food-network-kitchen
   foreach($html->find('li[o-Ingredients__a-ListItem]') as $ingredient) {
     $ingredients[] = trim($ingredient -> plaintext);
-    // echo trim($ingredient -> plaintext);
+    echo trim($ingredient -> plaintext);
   }
 
   //food-network-kitchen
@@ -86,8 +88,6 @@ else if ($host == 'www.chowhound.com') {
 else if ($host == 'www.geniuskitchen.com') {
   foreach($html->find('ul[class=ingredient-list]') as $element) {
     $ingredients[] = trim($element -> plaintext);
-    // echo trim($element -> plaintext);
-    // echo "||||||||||||||||||||";
   }
   foreach($html->find('ol[class=expanded]') as $element) {
     // $steps[] = ($element -> plaintext);
@@ -107,7 +107,7 @@ else if ($host == 'www.geniuskitchen.com') {
 // echo count($ingredients);
 // echo count($steps);
 
-// $lineLength = 36;
+$lineLength = 36;
 
 // echo $ingredients[0];
 // echo $steps[0];
@@ -117,76 +117,76 @@ else if ($host == 'www.geniuskitchen.com') {
 
 // $ingredientHeader = "Ingredients";
 
-// $allIngredientPages = array();
-// $ingredientPage = array();
+$allIngredientPages = array();
+$ingredientPage = array();
 // $ingredientPage[] = $ingredientHeader;
-// for ($i = 0; $i < count($ingredients); $i++) {
+for ($i = 0; $i < count($ingredients); $i++) {
    // $ingredients[$i] = utf8_decode($ingredients[$i]);
-   // $ingredients[$i] = str_replace("\n", '', $ingredients[$i]);
-   // $ingredients[$i] = str_replace("\\", '', $ingredients[$i]);
-   // $ingredients[$i] = str_replace("®", "", $ingredients[$i]);
+   $ingredients[$i] = str_replace("\n", '', $ingredients[$i]);
+   $ingredients[$i] = str_replace("\\", '', $ingredients[$i]);
+   $ingredients[$i] = str_replace("®", "", $ingredients[$i]);
    // $ingredients[$i] = str_replace("\\u00a0", "", $ingredients[$i]);
    // echo $ingredients[$i];
 
-//    $lineCnt = (int) ((mb_strlen($ingredients[$i]) / $lineLength) + 1);
-//
-//    $words = explode(' ', $ingredients[$i]);
-//    array_unshift($words, "" . ($i + 1) . ". ");
-//    for ($j = 0; $j < $lineCnt; ++$j) {
-//        $line = "";
-//        while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
-//            $line = $line . array_shift($words) . ' ';
-//        }
-//        //If line is not empty, add it.
-//        if (!empty(trim($line))) {
-//          $ingredientPage [] = trim($line);
-//        }
-//    }
-//
-//    if (count($ingredientPage) >= 11 || ($i == count($ingredients) - 1)) {
-//      $allIngredientPages[] = $ingredientPage;
-//      $ingredientPage = array();
-//      // $ingredientPage[] = $ingredientHeader;
-//    }
-// }
-//
-// $allStepPages = array();
-// $stepPage = array();
+   $lineCnt = (int) ((mb_strlen($ingredients[$i]) / $lineLength) + 1);
+
+   $words = explode(' ', $ingredients[$i]);
+   array_unshift($words, "" . ($i + 1) . ". ");
+   for ($j = 0; $j < $lineCnt; ++$j) {
+       $line = "";
+       while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
+           $line = $line . array_shift($words) . ' ';
+       }
+       //If line is not empty, add it.
+       if (!empty(trim($line))) {
+         $ingredientPage [] = trim($line);
+       }
+   }
+
+   if (count($ingredientPage) >= 11 || ($i == count($ingredients) - 1)) {
+     $allIngredientPages[] = $ingredientPage;
+     $ingredientPage = array();
+     // $ingredientPage[] = $ingredientHeader;
+   }
+}
+
+$allStepPages = array();
+$stepPage = array();
 // $stepHeader = "                                          Steps                            ";
 // $stepPage[] = $stepHeader;
-// for ($i = 0; $i < count($steps); $i++) {
-//     $steps[$i] = str_replace("\n", '', $steps[$i]);
-//     $steps[$i] = str_replace("\\", '', $steps[$i]);
-//     $steps[$i] = str_replace('&quot;', '"', $steps[$i]);
-//     $ingredients[$i] = str_replace("®", '', $ingredients[$i]);
-//     $lineCnt = (int) ((mb_strlen($steps[$i]) / $lineLength) + 1);
-//
-//     $words = explode(' ', $steps[$i]);
-//     array_unshift($words, "" . ($i + 1) . ". ");
-//     for ($j = 0; $j < $lineCnt; ++$j) {
-//         $line = "";
-//         while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
-//             $line = $line . array_shift($words) . ' ';
-//         }
-//         if (!empty(trim($line))) {
-//           $stepPage [] = $line;
-//         }
-//         if (count($stepPage) >= 11) {
-//           $allStepPages[] = $stepPage;
-//           $stepPage = array();
-//           // $stepPage[] = $stepHeader;
-//         }
-//     }
-//     if ($i == (count($steps) - 1)) {
-//       $allStepPages[] = $stepPage;
-//       $stepPage = array();
-//       // $stepPage[] = $stepHeader;
-//     }
-// }
-//
-// $ingredients = array_filter($allIngredientPages);
-// $steps = array_filter($allStepPages);
-// $arr["Pages"] = array_merge($ingredients, $steps);
+for ($i = 0; $i < count($steps); $i++) {
+    $steps[$i] = str_replace("\n", '', $steps[$i]);
+    $steps[$i] = str_replace("\\", '', $steps[$i]);
+    $steps[$i] = str_replace('&quot;', '"', $steps[$i]);
+    $ingredients[$i] = str_replace("®", '', $ingredients[$i]);
+    $lineCnt = (int) ((mb_strlen($steps[$i]) / $lineLength) + 1);
+
+    $words = explode(' ', $steps[$i]);
+    array_unshift($words, "" . ($i + 1) . ". ");
+    for ($j = 0; $j < $lineCnt; ++$j) {
+        $line = "";
+        while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
+            $line = $line . array_shift($words) . ' ';
+        }
+        if (!empty(trim($line))) {
+          $stepPage [] = $line;
+        }
+        if (count($stepPage) >= 11) {
+          $allStepPages[] = $stepPage;
+          $stepPage = array();
+          // $stepPage[] = $stepHeader;
+        }
+    }
+    if ($i == (count($steps) - 1)) {
+      $allStepPages[] = $stepPage;
+      $stepPage = array();
+      // $stepPage[] = $stepHeader;
+    }
+}
+
+$ingredients = array_filter($allIngredientPages);
+$steps = array_filter($allStepPages);
+$arr["Pages"] = array_merge($ingredients, $steps);
 
 // for ($i = 0; $i < count($arr["Pages"]); ++$i) {
 //   $pageIndex = ($i + 1) . "/" . count($arr["Pages"]);
@@ -200,17 +200,7 @@ else if ($host == 'www.geniuskitchen.com') {
 //   $arr["Pages"][$i][] = str_repeat(" ", 93 - strlen($pageIndex)) . $pageIndex;
 // }
 
-// for ($i = 0; $i < count($ingredients); ++$i) {
-//   str_replace("&#8212;", "—", $ingredients[$i]);
-// }
-
-// for ($i = 0; $i < count($steps); ++$i) {
-//   str_replace("&#8212;", "—", $steps[$i]);
-// }
-
-$arr["ingredients"] = $ingredients;
-$arr["steps"] = $steps;
-
 file_put_contents('recipe.json', json_encode($arr));
 echo json_encode($arr);
+
 ?>
