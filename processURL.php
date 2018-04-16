@@ -187,7 +187,7 @@ else if ($host == 'www.geniuskitchen.com') {
 // $ingredients = array_filter($allIngredientPages);
 // $steps = array_filter($allStepPages);
 // $arr["Pages"] = array_merge($ingredients, $steps);
-
+//
 // for ($i = 0; $i < count($arr["Pages"]); ++$i) {
 //   $pageIndex = ($i + 1) . "/" . count($arr["Pages"]);
 //   $numLines = count($arr["Pages"][$i]);
