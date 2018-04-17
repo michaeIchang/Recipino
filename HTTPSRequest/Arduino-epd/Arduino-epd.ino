@@ -83,8 +83,8 @@ void setup(void)
 //  pinMode(led, OUTPUT);
 //  digitalWrite(led, LOW);
   
-  pinMode(leftButtonPin, INPUT);
-  pinMode(rightButtonPin, INPUT);
+  pinMode(leftButtonPin, INPUT_PULLUP);
+  pinMode(rightButtonPin, INPUT_PULLUP);
 
   epd_init();
   epd_wakeup();
@@ -165,6 +165,8 @@ void loop(void)
     int rightButtonState = digitalRead(rightButtonPin);
     if (leftButtonState == HIGH)
     {
+//      digitalWrite(leftButtonPin, LOW);
+//      Serial.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
       delay(150);
       if (currPage > 0) {
         --currPage;
@@ -172,10 +174,11 @@ void loop(void)
       }
     }
     else if (rightButtonState == HIGH) {
+//      digitalWrite(rightButtonPin, LOW);
+//      Serial.println("RRRRRRRRRRRRRRRRIIIIIIIIIIIIIIIIIIIIIIIIIIIIGGGGGGGGGGGGGGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHHHHHHHHHTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
       delay(150);
       if (currPage + 1 < numPages) {
         ++currPage;
-        Serial.println("press");
         break;
       }
     }
@@ -184,15 +187,15 @@ void loop(void)
       http.begin("http://104.131.22.37/recipe.json");
       int httpCode = http.GET();
       String currContent = http.getString();
-//      Serial.println(currContent);
       if (currContent != content) {
         content = currContent;
-//        Serial.println(content);
+        currPage = 0;
         break;
       }
     }
     else{
-      delay(100);  
+      delay(100);
+      Serial.println(currPage);
     }
 
     

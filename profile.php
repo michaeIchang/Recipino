@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +17,7 @@
             text-align: center;
             height: 100%;
             width: 100%;
-            background-image: url('background-1.jpg');
+            background-image: url('background-4.png');
         }
         /* div {*/
             /*margin: 0 auto;*/
@@ -82,7 +85,7 @@
         }
 
         h1 {
-          color: BurlyWood;
+          /* color: BurlyWood; */
           /* font-weight: bold; */
         }
 
@@ -126,9 +129,13 @@
       </ul>
     </nav>
     <br><br><br><br>
-    <div id="user-recipes" class="bd-example" style="width: 100%; margin: 0 auto;">
+    <h1>
+      <?php echo("{$_SESSION['username']}"); ?>'s Profile
+    </h1>
+    <div id="user-recipes" class="bd-example" style="width: 80%; margin: 0 auto;">
       <div class="row">
         <div class="col-4" id="list-tab-div" style="height: 400px;">
+          <br>
           <div class="list-group" id="list-tab" role="tablist"></div>
         </div>
         <div class="col-8">
@@ -137,7 +144,7 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" onclick="getRecipes();">Save Recipe</button>
+    <button type="submit" class="btn btn-primary" id="save-recipe">Save Recipe</button>
 
     <script src="./form.js"></script>
     <script>

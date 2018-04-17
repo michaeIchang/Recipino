@@ -5,9 +5,15 @@
  * Date: 2/25/2018
  * Time: 5:17 PM
  */
-
+include('./simple_html_dom.php');
 session_start();
+
 $recipeName = $_POST['recipeName'];
+// $recipeName = 'Slow Cooker Corned Beef Brisket with Cabbage, Potatoes & Dill';
+if (filter_var($recipeName, FILTER_VALIDATE_URL)) {
+  $html = file_get_html($recipeName);
+  $recipeName = trim(($html->find('title', 0))->plaintext);
+}
 $recipeSteps = $_POST['recipeSteps'];
 $recipeIngredients = $_POST['recipeIngredients'];
 
@@ -50,7 +56,8 @@ else {
     $stmt2->close();
 }
 
-$arr = array("steps" => $recipeSteps);
+// $arr = array("steps" => $recipeSteps);
+// echo htmlspecialchars($recipeName);
 
-echo json_encode($arr);
+// echo json_encode($arr);
 ?>

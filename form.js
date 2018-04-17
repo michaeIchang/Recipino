@@ -1,98 +1,3 @@
-
-    // $("#submit").click(function () {
-    //     console.log("here");
-    //     $.post('recipe.php', 'val=' + document.getElementById("recipe").innerText, function (response) {
-    //         alert(response);
-    //     });
-    // });
-    // Variable to hold request
-    var request;
-
-    // Bind to the submit event of our form
-    $("#foo").submit(function(event){
-
-        // Prevent default posting of form - put here to work in case of errors
-        event.preventDefault();
-
-        // Abort any pending request
-        if (request) {
-            request.abort();
-        }
-        // setup some local variables
-        var $form = $(this);
-
-        // Let's select and cache all the fields
-        var $inputs = $form.find("input, select, button, textarea");
-
-        // Serialize the data in the form
-        var serializedData = $form.serialize();
-
-        // Let's disable the inputs for the duration of the Ajax request.
-        // Note: we disable elements AFTER the form data has been serialized.
-        // Disabled form elements will not be serialized.
-        $inputs.prop("disabled", true);
-
-        // Fire off the request to /form.php
-        request = $.ajax({
-            url: "/form.php",
-            type: "post",
-            data: serializedData
-        });
-
-        // Callback handler that will be called on success
-        request.done(function (response, textStatus, jqXHR){
-            // Log a message to the console
-            console.log("Hooray, it worked!");
-        });
-
-        // Callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            // Log the error to the console
-            console.error(
-                "The following error occurred: "+
-                textStatus, errorThrown
-            );
-        });
-
-        // Callback handler that will be called regardless
-        // if the request failed or succeeded
-        request.always(function () {
-            // Reenable the inputs
-            $inputs.prop("disabled", false);
-        });
-
-    });
-
-    // $('#myList a[href="#profile"]').on('click', function (e) {
-    //     e.preventDefault();
-    //     selectedRecipe = this.id;
-    //     $(this).tab('show');
-    // });
-    //
-    // $('#myList a:first-child').on('click', function (e) {
-    //     e.preventDefault();
-    //     selectedRecipe = this.id;
-    //     $(this).tab('show');
-    // });
-    //
-    // $('#myList a:last-child').on('click', function (e) {
-    //     e.preventDefault();
-    //     selectedRecipe = this.id;
-    //     $(this).tab('show');
-    // });
-    //
-    // $('#myList a:nth-child(3)').on('click', function (e) {
-    //     e.preventDefault();
-    //     selectedRecipe = this.id;
-    //     $(this).tab('show');
-    // });
-
-
-    // $('#myList a[href="#profile"]').tab('show') // Select tab by name
-    // $('#myList a:first-child').tab('show') // Select first tab
-    // $('#myList a:last-child').tab('show') // Select last tab
-    // $('#myList a:nth-child(3)').tab('show') // Select third tab
-
     $(document).ready(function() {
 
         $( "#register-button").click(function() {
@@ -124,25 +29,11 @@
         });
 
         $("#sign-out").click(function () {
-            // alert( "Handler for .click() called." );
-            // e.preventDefault()
-            // document.getElementById("main-nav").style.display = 'none';
-            // document.getElementsByClassName("jumbotron")[0].style.display = 'block';
-            // document.getElementById("sign-out").style.display = 'none';
-            // document.getElementById("register").style.display = 'inline-block';
-            // document.getElementById("sign-in").style.display = 'inline-block';
-            // document.getElementById("carousel").style.display = 'block';
-            // document.getElementById("recipes").style.display = 'none';
-            // document.getElementById("save-recipe").style.display = 'none';
-            // document.getElementById("submit-recipe").style.display = 'none';
-            // document.getElementById("url-input").style.display = 'none';
-            // document.getElementById("recipe-steps").style.display = 'none';
-            // var xmlHttp = new XMLHttpRequest();
-            // xmlHttp.open("POST", "signOut.php", true);
-            // xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            // xmlHttp.send();
             window.location.href = "/";
-
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("POST", "signOut.php", true);
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlHttp.send();
         });
 
         $("#submit-recipe").click(function () {
@@ -190,25 +81,41 @@
             // alert( "Handler for .click() called." );
             // e.preventDefault()
 
-            var recipes = document.getElementsByClassName("list-group-item");
-            var i = 0;
-            for (i; i < recipes.length; ++i) {
-                if (recipes[i].classList.contains('active')) {
-                    break;
-                }
-            }
 
-            var recipeName = recipes[i].innerText;
-            var recipesSteps = document.getElementsByClassName("steps");
-            var recipesIngredients = document.getElementsByClassName("ingredients");
-            var recipeSteps = recipesSteps[i].value;
-            var recipeIngredients = recipesIngredients[i].value;
-            // console.log(recipeSteps);
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("POST", "saveRecipe.php", true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlHttp.addEventListener("load", saveRecCallBack, false);
-            xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps + "&recipeIngredients=" + recipeIngredients);
+            if (document.getElementById("preview").style.display != 'none') {
+              var recipeName = document.getElementById("recipe-url").value;
+              console.log("URL:" + recipeName);
+              var recipeSteps = document.getElementById("steps").value;
+              var recipeIngredients = document.getElementById("ingredients").value;
+              var xmlHttp = new XMLHttpRequest();
+              xmlHttp.open("POST", "saveRecipe.php", true);
+              xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+              xmlHttp.addEventListener("load", saveRecCallBack, false);
+              xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps + "&recipeIngredients=" + recipeIngredients);
+              return;
+            }
+            else {
+              var recipes = document.getElementsByClassName("list-group-item");
+              var i = 0;
+              for (i; i < recipes.length; ++i) {
+                  if (recipes[i].classList.contains('active')) {
+                      break;
+                  }
+              }
+
+              var recipeName = decodeURIComponent(recipes[i].innerText);
+              console.log(recipeName);
+              var recipesSteps = document.getElementsByClassName("steps");
+              var recipesIngredients = document.getElementsByClassName("ingredients");
+              var recipeSteps = recipesSteps[i].value;
+              var recipeIngredients = recipesIngredients[i].value;
+              // console.log(recipeSteps);
+              var xmlHttp = new XMLHttpRequest();
+              xmlHttp.open("POST", "saveRecipe.php", true);
+              xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+              xmlHttp.addEventListener("load", saveRecCallBack, false);
+              xmlHttp.send("recipeName=" + recipeName + "&recipeSteps=" + recipeSteps + "&recipeIngredients=" + recipeIngredients);
+            }
         });
 
         $("#add-url-recipe").click(function (){
@@ -278,7 +185,7 @@
         var jsonData = JSON.parse(plainText);
         // console.log(jsonData.user);
         // console.log(jsonData.recipeName);
-        console.log(jsonData.steps);
+        // console.log(jsonData.steps);
     }
 
     function regCallBack (event) {
@@ -342,7 +249,7 @@
 
         // for (i; i < recipeList.length; ++i) {
             // if (recipeList[i].id == jsonData[2*i + 1]) {
-                if (jsonData.recipe.length > 9) {
+                if (jsonData.recipe.length > 7) {
                   $("#list-tab-div").attr("style", "height: 400px; overflow-y: scroll;");
                 }
 
@@ -362,6 +269,9 @@
                   $(".list-group-item").attr("role", "tab");
                   // tab.role = "tab";
                   tab_list.appendChild(tab);
+
+                  // var br = document.createElement("br");
+                  // tab_list.appendO)
 
                   var tab_pane = document.createElement("div");
                   tab_pane.className = "tab-pane fade";
@@ -432,6 +342,7 @@
             // }
         // }
         $(".list-group-item").attr("data-toggle", "list");
+        $(".list-group-item").attr("role", "tab");
     }
 
     function loginCallBack (event) {
@@ -565,3 +476,9 @@
       xmlHttp.addEventListener("load", getRecipeCallBack, false);
       xmlHttp.send();
     });
+
+    function matchURL() {
+      var e = document.getElementById("inputState");
+      var url = e.options[e.selectedIndex].value;
+      document.getElementById("recipe-url").value = url;
+    }

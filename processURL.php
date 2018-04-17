@@ -6,6 +6,7 @@ $url = $_POST['url'];
 // $url = 'https://www.epicurious.com/recipes/food/views/classic-omelette-15068';
 // $url = 'https://www.foodnetwork.com/recipes/food-network-kitchen/cadbury-deviled-eggs-5119490';
 // $url = 'https://www.foodnetwork.com/recipes/amy-thielen/maple-bread-with-soft-cheese-2224757';
+// $url = 'https://www.chowhound.com/recipes/chinese-garlic-eggplant-32058';
 $host = parse_url($url, PHP_URL_HOST);
 // echo $host;
 // get DOM from URL or file
@@ -36,7 +37,7 @@ if ($host == 'www.epicurious.com') {
 
 else if ($host == 'www.foodnetwork.com') {
   // food-network-kitchen
-  foreach($html->find('li[o-Ingredients__a-ListItem]') as $ingredient) {
+  foreach($html->find('label[class=o-Ingredients__a-ListItemText]') as $ingredient) {
     $ingredients[] = trim($ingredient -> plaintext);
     // echo trim($ingredient -> plaintext);
   }
@@ -63,8 +64,11 @@ else if ($host == 'www.foodnetwork.com') {
 // echo "        ";
 
 else if ($host == 'www.allrecipes.com') {
-  foreach($html->find('span[class=recipe-ingred_txt added]') as $element) {
-      $ingredients[] = trim($element -> plaintext);
+  foreach($html->find('span[class=recipe-ingred_txt]') as $element) {
+      // $ingredients[] = trim($element -> plaintext);
+      if (!(strpos(($element -> plaintext), 'Add all ingredients to list') !== false)) {
+        $ingredients[] = trim($element -> plaintext);
+      }
   }
   foreach($html->find('span[class=recipe-directions__list--item]') as $element) {
       $steps[] = trim($element -> plaintext);
@@ -77,20 +81,36 @@ else if ($host == 'www.chowhound.com') {
     $ingredients[] = trim($element -> plaintext);
     // echo $ingredients[0];
   }
-  $stepDiv = $html -> find('div[itemprop=recipeInstructions]');
-  // foreach($stepDiv->find('li') as $element) {
-    $steps[] = explode('\n', trim($stepDiv->plaintext));
-  // }
+  // $step = $html -> find('.frr_wrap > ol:nth-child(1) > li:nth-child(1)');
+
+  foreach($step->find('li') as $element) {
+    $steps[] = $step -> plaintext;
+  }
 }
 
 else if ($host == 'www.geniuskitchen.com') {
+  $i = 0;
   foreach($html->find('ul[class=ingredient-list]') as $element) {
-    $ingredients[] = trim($element -> plaintext);
+    foreach($element->find('li') as $item) {
+      if ($i != 0) {
+        $ingredients[] = trim($item -> plaintext);
+      }
+      else {
+        ++$i;
+      }
+
+    }
     // echo trim($element -> plaintext);
     // echo "||||||||||||||||||||";
   }
-  foreach($html->find('ol[class=expanded]') as $element) {
-    // $steps[] = ($element -> plaintext);
+  foreach($html->find('div[class=directions]') as $element) {
+    foreach($element->find('li') as $item) {
+      if (!(strpos(($item -> plaintext), 'Follow these instructions carefully.') !== false)) {
+        if (!(strpos(($item -> plaintext), 'Submit a Correction') !== false)) {
+          $steps[] = ($item -> plaintext);
+        }
+      }
+    }
     // echo $element;
   }
 }
@@ -211,6 +231,6 @@ else if ($host == 'www.geniuskitchen.com') {
 $arr["ingredients"] = $ingredients;
 $arr["steps"] = $steps;
 
-file_put_contents('recipe.json', json_encode($arr));
+// file_put_contents('recipe.json', json_encode($arr));
 echo json_encode($arr);
 ?>

@@ -7,7 +7,7 @@
  */
 
 $mysqli = new mysqli('localhost', 'wustl_inst', 'wustl_pass', 'recipino');
-
+mysqli_set_charset($mysqli, 'utf8');
 if($mysqli->connect_errno) {
     printf("Connection Failed: %s\n", $mysqli->connect_error);
     exit;

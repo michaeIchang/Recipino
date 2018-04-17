@@ -12,11 +12,11 @@ $lineLength = 36;
 //MC
 //Format ingredients and steps to fit onto display
 
-// $ingredientHeader = "Ingredients";
+$ingredientHeader = "                                     Ingredients";
 
 $allIngredientPages = array();
 $ingredientPage = array();
-// $ingredientPage[] = $ingredientHeader;
+$ingredientPage[] = $ingredientHeader;
 for ($i = 0; $i < count($ingredients); $i++) {
    // $ingredients[$i] = utf8_decode($ingredients[$i]);
    $ingredients[$i] = str_replace("\n", '', $ingredients[$i]);
@@ -28,7 +28,8 @@ for ($i = 0; $i < count($ingredients); $i++) {
    $lineCnt = (int) ((mb_strlen($ingredients[$i]) / $lineLength) + 1);
 
    $words = explode(' ', $ingredients[$i]);
-   array_unshift($words, "" . ($i + 1) . ". ");
+   array_filter($words);
+   // array_unshift($words, "" . ($i + 1) . ". ");
    for ($j = 0; $j < $lineCnt; ++$j) {
        $line = "";
        while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
@@ -43,7 +44,7 @@ for ($i = 0; $i < count($ingredients); $i++) {
    if (count($ingredientPage) >= 11 || ($i == count($ingredients) - 1)) {
      $allIngredientPages[] = $ingredientPage;
      $ingredientPage = array();
-     // $ingredientPage[] = $ingredientHeader;
+     $ingredientPage[] = $ingredientHeader;
    }
 }
 
@@ -59,7 +60,9 @@ for ($i = 0; $i < count($steps); $i++) {
     $lineCnt = (int) ((mb_strlen($steps[$i]) / $lineLength) + 1);
 
     $words = explode(' ', $steps[$i]);
-    array_unshift($words, "" . ($i + 1) . ". ");
+    $words = str_replace(' ', '', $words);
+    array_filter($words);
+    // array_unshift($words, "" . ($i + 1) . ". ");
     for ($j = 0; $j < $lineCnt; ++$j) {
         $line = "";
         while (count($words) > 0 && mb_strlen($line . $words[0]) <= $lineLength) {
@@ -71,13 +74,13 @@ for ($i = 0; $i < count($steps); $i++) {
         if (count($stepPage) >= 11) {
           $allStepPages[] = $stepPage;
           $stepPage = array();
-          // $stepPage[] = $stepHeader;
+          $stepPage[] = $stepHeader;
         }
     }
     if ($i == (count($steps) - 1)) {
       $allStepPages[] = $stepPage;
       $stepPage = array();
-      // $stepPage[] = $stepHeader;
+      $stepPage[] = $stepHeader;
     }
 }
 
@@ -94,7 +97,7 @@ for ($i = 0; $i < count($arr["Pages"]); ++$i) {
         $arr["Pages"][$i][] = " ";
   }
 
-  $arr["Pages"][$i][] = str_repeat(" ", 93 - strlen($pageIndex)) . $pageIndex;
+  $arr["Pages"][$i][] = str_repeat(" ", 91 - strlen($pageIndex)) . $pageIndex;
 }
 
 

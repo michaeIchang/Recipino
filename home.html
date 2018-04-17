@@ -130,7 +130,7 @@
           <a class="nav-link" href="#preview-edit">3: Recipe Preview</a>
         </li> -->
         <li class="nav-item" id="profile">
-          <a class="nav-link" href="/profile.html">Profile</a>
+          <a class="nav-link" href="/profile.php">Profile</a>
         </li>
         <li class="nav-item" id="sign-out">
           <a class="nav-link" href="#logout">Logout</a>
@@ -174,18 +174,41 @@
         <!-- url input -->
         <div id="url-input-form" style="margin: 0 auto; width:100%;">
           <form style="margin: 0 auto; width:100%;">
+            <div class="form-group" style="width: 50%; margin: 0 auto;">
+              <label for="recipe-url"><b>URL<b></label>
+              <a style="width: 50%;">
+                <input type="text" class="form-control" oninput="recipeParse();" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
+                </input>
+              </a>
+            </div>
+            <a>
+              <div class="form-group col-md-4" style="margin: 0 auto; width: 60%;">
+                <label for="inputState">Demo URLs</label>
+                <select id="inputState" oninput="matchURL();recipeParse();" class="form-control">
+                  <!-- <option selected>Choose a URL</option> -->
+                  <option selected> Demos </option>
+                  <option> http://www.geniuskitchen.com/recipe/kosher-perfect-matzo-balls-94412 </option>
+                  <option> https://www.epicurious.com/recipes/food/views/classic-omelette-15068 </option>
+                  <option> https://www.chowhound.com/recipes/chinese-garlic-eggplant-32058 </option>
+                  <option> https://www.allrecipes.com/recipe/255744/silpancho-from-cochabamba-bolivia/ </option>
+                  <option> https://www.foodnetwork.com/recipes/food-network-kitchen/cadbury-deviled-eggs-5119490 </option>
+                </select>
+              </div>
+            </a>
             <!-- <div class="form-row"> -->
-              <div class="form-group" style="width: 50%; margin: 0 auto;">
+              <!-- <div class="form-group" style="width: 50%; margin: 0 auto;"> -->
                 <!-- <br><br><br><br><br><br><br><br -->
-                <br>
+                <!-- <br>
                 <label for="recipe-url"><b>URL<b></label>
                 <a>
                   <input type="text" class="form-control" oninput="recipeParse();" id="recipe-url" placeholder="https://www.foodnetwork.com/recipes/food-network-kitchen/greek-easter-bread-recipe-2042563">
-                </a>
+
+                  </input>
+                </a> -->
                 <!-- <br> -->
                 <!-- <a class="btn btn-primary" href="#preview-edit" onclick="recipeParse();" role="button">Next</a> -->
                 <!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-              </div>
+              <!-- </div> -->
 
             <!-- </div> -->
           </form>
@@ -299,12 +322,12 @@
 
         <a>
           <div id="preview" class="bd-example" style="width: 100%; margin: 0 auto;">
-            <br><br>
+            
             <label><b>Preview</b></label>
             <br>
             <div style="display: flex; width: 60%; margin: 0 auto; justify-content: space-between">
-              <textarea class="form-control" id="ingredients" rows="12" cols="10" ></textarea>
-              <textarea class="form-control" id="steps" rows="12" cols="10"></textarea>
+              <textarea class="form-control" id="ingredients" rows="12" cols="10" placeholder="Ingredients"></textarea>
+              <textarea class="form-control" id="steps" rows="12" cols="10" placeholder="Steps"></textarea>
             </div>
             <!-- <div class="row">
               <div class="col-4" style="height: 300px; overflow-y: scroll;">
@@ -334,7 +357,8 @@
             </div> -->
 
             <div class="row">
-              <div class="col-4" style="height: 400px;">
+              <div class="col-4" style="height: 400px;" id="list-tab-div" >
+                <br>
                 <div class="list-group" id="list-tab" role="tablist">
                 </div>
               </div>
